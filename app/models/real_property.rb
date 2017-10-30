@@ -1,0 +1,2 @@
+class RealProperty < ApplicationRecord
+end
