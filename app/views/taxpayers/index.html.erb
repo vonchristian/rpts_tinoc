@@ -1,2 +1,7 @@
 <h3>Taxpayers</h3>
 <%= link_to "New Taxpayer", new_taxpayer_path %>
+
+
+<% @taxpayers.each do |taxpayer| %>
+  <%= link_to taxpayer.first_name, taxpayer_path(taxpayer) %>
+<% end %>

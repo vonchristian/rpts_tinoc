@@ -1,5 +1,6 @@
 class TaxpayersController < ApplicationController
   def index
+    @taxpayers = Taxpayer.all
   end
   def new
     @taxpayer = Taxpayer.new
