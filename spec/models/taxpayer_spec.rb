@@ -1,8 +1,8 @@
 require 'rails_helper'
 
-describe RealProperty do
+describe Taxpayer do
   describe 'associations' do
-    it { is_expected.to have_many :taxpayers }
     it { is_expected.to have_many :taxpayer_real_properties }
+    it { is_expected.to have_many :real_properties }
   end
 end
