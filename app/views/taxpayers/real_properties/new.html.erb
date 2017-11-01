@@ -1,4 +1,7 @@
 <%= simple_form_for [@taxpayer, @real_property] do |f| %>
   <%= f.input :description %>
+  <%= f.simple_fields_for :tax_declarations do |t| %>
+  <%= t.input :number %>
+  <% end %>
   <%= f.submit "Save Real Property" %>
 <% end %>

@@ -3,6 +3,7 @@ module Taxpayers
     def new
       @taxpayer = Taxpayer.find(params[:taxpayer_id])
       @real_property = @taxpayer.real_properties.build
+      @real_property.tax_declarations.build
     end
 
      def create
@@ -18,7 +19,7 @@ module Taxpayers
 
     private
     def real_property_params
-      params.require(:real_property).permit(:description)
+      params.require(:real_property).permit(:description, tax_declarations_attributes: [:number])
     end
   end
 end

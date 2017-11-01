@@ -8,6 +8,7 @@ describe "New real property" do
     click_link 'New Real Property'
 
     fill_in "Description", with: "House and Lot"
+    fill_in 'Number', with: '00-990334-13'
     click_button "Save Real Property"
 
     expect(page).to have_content("saved successfully")

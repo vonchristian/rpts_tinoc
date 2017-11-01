@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171030113652) do
+ActiveRecord::Schema.define(version: 20171101053936) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -30,6 +30,16 @@ ActiveRecord::Schema.define(version: 20171030113652) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["real_property_id"], name: "index_revisions_on_real_property_id"
+  end
+
+  create_table "tax_declarations", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "real_property_id"
+    t.string "number"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.boolean "cancelled", default: false
+    t.index ["number"], name: "index_tax_declarations_on_number", unique: true
+    t.index ["real_property_id"], name: "index_tax_declarations_on_real_property_id"
   end
 
   create_table "taxpayer_real_properties", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -53,6 +63,7 @@ ActiveRecord::Schema.define(version: 20171030113652) do
   end
 
   add_foreign_key "revisions", "real_properties"
+  add_foreign_key "tax_declarations", "real_properties"
   add_foreign_key "taxpayer_real_properties", "real_properties"
   add_foreign_key "taxpayer_real_properties", "taxpayers"
 end

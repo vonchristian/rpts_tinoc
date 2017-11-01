@@ -6,3 +6,9 @@
 <% @real_property.revisions.each do |revision| %>
   <%= revision.date %>
 <% end %>
+<%= link_to 'New Tax Declaration', new_real_property_tax_declaration_path(@real_property) %>
+<p>Tax Declarations</p>
+<% @real_property.tax_declarations.each do |td| %>
+  <%= td.number %>
+  <%= td.cancelled %>
+<% end %>
