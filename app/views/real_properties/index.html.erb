@@ -1,1 +1,5 @@
 <h3> Real Properties </h3>
+
+<% @real_properties.each do |real_property| %>
+  <%= link_to real_property.description, real_property %>
+<% end %>
