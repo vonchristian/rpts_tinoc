@@ -1,3 +1,8 @@
 <%= @real_property.description %>
 
 <%= link_to 'New Revision', new_real_property_revision_path(@real_property) %>
+
+<p>Revisions</p>
+<% @real_property.revisions.each do |revision| %>
+  <%= revision.date %>
+<% end %>
