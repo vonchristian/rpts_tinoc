@@ -5,10 +5,11 @@ describe 'New revision' do
     real_property = create(:real_property)
     visit real_properties_url
     click_link real_property.description
+    click_link 'New Revision'
 
     fill_in "Date", with: Date.today
     click_button "Save Revision"
 
-    expect(page).tp have_content('saved successfully')
+    expect(page).to have_content('saved successfully')
   end
 end
