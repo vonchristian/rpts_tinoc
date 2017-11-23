@@ -1,5 +1,5 @@
 <%= @real_property.description %>
-
+<%= @real_property.current_owner.try(:first_and_last_name) %>
 <%= link_to 'New Revision', new_real_property_revision_path(@real_property) %>
 
 <p>Revisions</p>
@@ -18,3 +18,7 @@
   <%= arp.number %>
 <% end %>
 <%= link_to 'New Transfer', new_real_property_transfer_transaction_path(@real_property) %>
+<% @real_property.transfer_transactions.order(date_transferred: :asc).each do |transfer| %>
+  <%= transfer.new_owner.try(:first_and_last_name) %>
+  <%= transfer.date_transferred.try(:strftime, ("%B %e, %Y")) %>
+<% end %>
