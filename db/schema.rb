@@ -10,11 +10,21 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171101053936) do
+ActiveRecord::Schema.define(version: 20171123105704) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
   enable_extension "pgcrypto"
+
+  create_table "assessed_real_properties", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "real_property_id"
+    t.string "number"
+    t.boolean "cancelled"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["number"], name: "index_assessed_real_properties_on_number", unique: true
+    t.index ["real_property_id"], name: "index_assessed_real_properties_on_real_property_id"
+  end
 
   create_table "real_properties", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "type"
@@ -62,6 +72,7 @@ ActiveRecord::Schema.define(version: 20171101053936) do
     t.index ["email"], name: "index_taxpayers_on_email", unique: true
   end
 
+  add_foreign_key "assessed_real_properties", "real_properties"
   add_foreign_key "revisions", "real_properties"
   add_foreign_key "tax_declarations", "real_properties"
   add_foreign_key "taxpayer_real_properties", "real_properties"

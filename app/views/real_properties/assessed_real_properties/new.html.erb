@@ -1,0 +1,14 @@
+<div class="row">
+  <div class="col-md-6 col-md-offset-3">
+    <div class="box box-solid">
+      <div class="box-header">
+      </div>
+      <div class="box-body">
+        <%= simple_form_for [@real_property, @assessed_real_property], url: :real_property_assessed_real_properties do |f| %>
+          <%= f.input :number %>
+          <%= f.submit "Save ARP" %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>

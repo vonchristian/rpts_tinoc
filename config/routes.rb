@@ -2,6 +2,7 @@ Rails.application.routes.draw do
   resources :real_properties, only: [:index, :show] do
     resources :revisions, only: [:new, :create], module: :real_properties
     resources :tax_declarations, only: [:new, :create], module: :real_properties
+    resources :assessed_real_properties, only: [:new, :create], module: :real_properties
 
   end
   resources :taxpayers, only: [:index, :new, :create, :show] do

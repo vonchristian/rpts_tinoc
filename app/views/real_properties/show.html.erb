@@ -12,3 +12,8 @@
   <%= td.number %>
   <%= td.cancelled %>
 <% end %>
+
+<%= link_to 'New ARP', new_real_property_assessed_real_property_path(@real_property) %>
+<% @real_property.assessed_real_properties.each do |arp| %>
+  <%= arp.number %>
+<% end %>
