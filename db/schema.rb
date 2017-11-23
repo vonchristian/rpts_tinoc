@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171123105704) do
+ActiveRecord::Schema.define(version: 20171123122519) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -72,9 +72,24 @@ ActiveRecord::Schema.define(version: 20171123105704) do
     t.index ["email"], name: "index_taxpayers_on_email", unique: true
   end
 
+  create_table "transfer_transactions", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "new_owner_id"
+    t.uuid "previous_owner_id"
+    t.uuid "real_property_id"
+    t.datetime "date_transferred"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["new_owner_id"], name: "index_transfer_transactions_on_new_owner_id"
+    t.index ["previous_owner_id"], name: "index_transfer_transactions_on_previous_owner_id"
+    t.index ["real_property_id"], name: "index_transfer_transactions_on_real_property_id"
+  end
+
   add_foreign_key "assessed_real_properties", "real_properties"
   add_foreign_key "revisions", "real_properties"
   add_foreign_key "tax_declarations", "real_properties"
   add_foreign_key "taxpayer_real_properties", "real_properties"
   add_foreign_key "taxpayer_real_properties", "taxpayers"
+  add_foreign_key "transfer_transactions", "real_properties"
+  add_foreign_key "transfer_transactions", "taxpayers", column: "new_owner_id"
+  add_foreign_key "transfer_transactions", "taxpayers", column: "previous_owner_id"
 end

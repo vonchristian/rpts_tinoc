@@ -7,7 +7,9 @@ describe RealProperty do
     it { is_expected.to have_many :revisions }
     it { is_expected.to have_many :tax_declarations }
     it { is_expected.to have_many :assessed_real_properties }
+    it { is_expected.to have_many :transfer_transactions }
   end
+
   it '#current_arp' do
     real_property = create(:real_property)
     first_arp = create(:assessed_real_property, real_property: real_property)

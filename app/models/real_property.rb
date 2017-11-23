@@ -4,6 +4,7 @@ class RealProperty < ApplicationRecord
   has_many :revisions
   has_many :tax_declarations
   has_many :assessed_real_properties
+  has_many :transfer_transactions
   accepts_nested_attributes_for :tax_declarations
 
   def current_arp

@@ -17,3 +17,4 @@
 <% @real_property.assessed_real_properties.each do |arp| %>
   <%= arp.number %>
 <% end %>
+<%= link_to 'New Transfer', new_real_property_transfer_transaction_path(@real_property) %>

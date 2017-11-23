@@ -1,0 +1,5 @@
+<%= simple_form_for [@real_property, @transfer], url: :real_property_transfer_transactions do |f| %>
+  <%= f.input :new_owner_id, collection: Taxpayer.all.map{ |a| [a.first_name, a.id] } %>
+  <%= f.input :date_transferred, as: :string, input_html: { class: "datepicker" } %>
+  <%= f.submit "Save Transfer" %>
+<% end %>
