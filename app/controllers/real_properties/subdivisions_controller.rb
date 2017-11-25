@@ -3,7 +3,7 @@ module RealProperties
     def new
        @real_property = RealProperty.find(params[:real_property_id])
        @subdivision = @real_property.subdivided_real_properties.build
-       @subdivision.taxpayer_real_properties.build
+       @subdivision.real_property_ownerships.build
      end
      def create
       @real_property = RealProperty.find(params[:real_property_id])
@@ -11,6 +11,7 @@ module RealProperties
       if @subdivision.valid?
         @subdivision.save
         redirect_to new_real_property_subdivision_url(@real_property), notice: "saved successfully"
+        PreviousRealProperty.add_previous_real_properties(@real_property, @subdivision)
       else
         render :new
       end
@@ -18,7 +19,7 @@ module RealProperties
 
     private
     def subdivision_params
-      params.require(:real_property).permit(:description, taxpayer_real_properties_attributes: [:taxpayer_id])
+      params.require(:real_property).permit(:description, real_property_ownerships_attributes: [:taxpayer_id])
     end
   end
 end

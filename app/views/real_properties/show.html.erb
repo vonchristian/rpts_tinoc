@@ -22,10 +22,24 @@
   <%= arp.number %>
 <% end %>
 <%= link_to 'New Transfer', new_real_property_transfer_transaction_path(@real_property) %>
-<% @real_property.transfer_transactions.order(date_transferred: :asc).each do |transfer| %>
-  <%= transfer.new_owner.try(:first_and_last_name) %>
-  <%= transfer.date_transferred.try(:strftime, ("%B %e, %Y")) %>
-<% end %>
+
 
 <%= link_to 'New Subdivision', new_real_property_subdivision_path(@real_property) %>
 <%= link_to 'Add Owner', new_real_property_additional_taxpayer_path(@real_property) %>
+
+<p>Previous Real PRoperties</p>
+  <% @real_property.previous_real_properties.each do |real_property| %>
+    <%= link_to real_property.old_real_property.description, real_property_path(real_property.old_real_property) %>
+  <% end %>
+
+<hr>
+<% if @real_property.latest_real_property.present? %>
+  <% @real_property.latest_real_property.previous_real_properties.each do |real_property| %>
+      <%= link_to real_property.old_real_property.description, real_property_path(real_property.old_real_property) %>
+  <% end %>
+  <%= link_to @real_property.latest_real_property.description, real_property_path(@real_property.latest_real_property) %>
+
+<% end %>
+<% @real_property.subdivided_real_properties.each do |real_property| %>
+  <%= link_to real_property.description, real_property_path(real_property) %>
+<% end %>

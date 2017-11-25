@@ -27,3 +27,6 @@ Things you may want to cover:
 Subdivision
 belongs to
 has_many subdivi
+
+export to excel
+a/r payments

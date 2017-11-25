@@ -8,9 +8,10 @@ class RealPropertyConsolidationsController < ApplicationController
     @real_property_consolidation = @consolidation.real_property_consolidations.create(real_property_consolidation_params)
     @real_property_consolidation.save
     redirect_to new_consolidation_real_property_consolidation_url(@consolidation)
+    PreviousRealProperty.add_previous_real_properties(@real_property_consolidation.real_property, @consolidation.real_property)
   end
   private
   def real_property_consolidation_params
-    params.require(:real_property_consolidation).permit(:real_property_id, :consolidator_id)
+    params.require(:real_properties_real_property_consolidation).permit(:real_property_id, :consolidator_id)
   end
 end

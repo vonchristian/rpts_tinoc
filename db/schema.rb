@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171125061854) do
+ActiveRecord::Schema.define(version: 20171125103512) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -36,6 +36,15 @@ ActiveRecord::Schema.define(version: 20171125061854) do
     t.index ["real_property_id"], name: "index_consolidations_on_real_property_id"
   end
 
+  create_table "previous_real_properties", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "latest_real_property_id"
+    t.uuid "old_real_property_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["latest_real_property_id"], name: "index_previous_real_properties_on_latest_real_property_id"
+    t.index ["old_real_property_id"], name: "index_previous_real_properties_on_old_real_property_id"
+  end
+
   create_table "real_properties", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "type"
     t.datetime "created_at", null: false
@@ -58,12 +67,13 @@ ActiveRecord::Schema.define(version: 20171125061854) do
   end
 
   create_table "real_property_ownerships", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.uuid "taxpayer_id"
+    t.string "property_owner_type"
+    t.uuid "property_owner_id"
     t.uuid "real_property_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["property_owner_type", "property_owner_id"], name: "index_on_real_property_ownerships_property_owner_id"
     t.index ["real_property_id"], name: "index_real_property_ownerships_on_real_property_id"
-    t.index ["taxpayer_id"], name: "index_real_property_ownerships_on_taxpayer_id"
   end
 
   create_table "revisions", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -110,12 +120,13 @@ ActiveRecord::Schema.define(version: 20171125061854) do
   add_foreign_key "assessed_real_properties", "real_properties"
   add_foreign_key "consolidations", "real_properties"
   add_foreign_key "consolidations", "taxpayers", column: "consolidator_id"
+  add_foreign_key "previous_real_properties", "real_properties", column: "latest_real_property_id"
+  add_foreign_key "previous_real_properties", "real_properties", column: "old_real_property_id"
   add_foreign_key "real_properties", "real_properties", column: "subdivided_real_property_id"
   add_foreign_key "real_property_consolidations", "consolidations"
   add_foreign_key "real_property_consolidations", "real_properties"
   add_foreign_key "real_property_consolidations", "taxpayers", column: "consolidator_id"
   add_foreign_key "real_property_ownerships", "real_properties"
-  add_foreign_key "real_property_ownerships", "taxpayers"
   add_foreign_key "revisions", "real_properties"
   add_foreign_key "tax_declarations", "real_properties"
   add_foreign_key "transfer_transactions", "real_properties", column: "new_real_property_id"

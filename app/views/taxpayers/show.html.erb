@@ -4,12 +4,10 @@
   <%= link_to real_property.description, real_property %>
 <% end %>
 <p>Transferred Real Properties</p>
-<% @taxpayer.owned_previous_real_properties.each do |transfer| %>
-  <%= link_to transfer.real_property_description, transfer.real_property %>
-<% end %>
+
 <p>Received Real Properties</p>
 <% @taxpayer.received_transferred_real_properties.each do |transfer| %>
-  <%= link_to transfer.real_property_description, transfer.real_property %>
+  <%#= link_to transfer.old_real_property_description, transfer.real_property %>
 <% end %>
 
 
