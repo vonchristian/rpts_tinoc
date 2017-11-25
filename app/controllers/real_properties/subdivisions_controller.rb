@@ -19,7 +19,7 @@ module RealProperties
 
     private
     def subdivision_params
-      params.require(:real_property).permit(:description, real_property_ownerships_attributes: [:taxpayer_id])
+      params.require(:real_property).permit(:description, real_property_ownerships_attributes: [:property_owner_id, :property_owner_type])
     end
   end
 end

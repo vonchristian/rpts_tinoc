@@ -1,7 +1,9 @@
 <%= simple_form_for [@real_property, @subdivision], url: :real_property_subdivisions do |f| %>
   <%= f.input :description %>
   <%= f.simple_fields_for :real_property_ownerships do |t| %>
-    <%= t.input :taxpayer_id, collection: Taxpayer.all.map{|a| [a.first_and_last_name, a.id] } %>
+    <%= t.input :property_owner_id, collection: Taxpayer.all.map{|a| [a.first_and_last_name, a.id] } %>
+    <%= t.input :property_owner_type, input_html: { value: "Taxpayer"} %>
+
   <% end %>
   <%= f.simple_fields_for :tax_declarations do |t| %>
   <%= t.input :number %>

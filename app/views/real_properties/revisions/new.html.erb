@@ -1,4 +1,4 @@
-<%= simple_form_for [@real_property, @revision] do |f| %>
+<%= simple_form_for [@real_property, @revision], url: :real_property_revisions do |f| %>
   <%= f.input :date, as: :string %>
   <%= f.submit "Save Revision" %>
 <% end %>

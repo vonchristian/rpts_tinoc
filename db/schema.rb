@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171125103512) do
+ActiveRecord::Schema.define(version: 20171125123502) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -26,6 +26,22 @@ ActiveRecord::Schema.define(version: 20171125103512) do
     t.index ["real_property_id"], name: "index_assessed_real_properties_on_real_property_id"
   end
 
+  create_table "barangays", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "municipality_id"
+    t.string "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["municipality_id"], name: "index_barangays_on_municipality_id"
+  end
+
+  create_table "cancellations", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "real_property_id"
+    t.datetime "date_cancelled"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["real_property_id"], name: "index_cancellations_on_real_property_id"
+  end
+
   create_table "consolidations", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "consolidator_id"
     t.uuid "real_property_id"
@@ -34,6 +50,25 @@ ActiveRecord::Schema.define(version: 20171125103512) do
     t.datetime "updated_at", null: false
     t.index ["consolidator_id"], name: "index_consolidations_on_consolidator_id"
     t.index ["real_property_id"], name: "index_consolidations_on_real_property_id"
+  end
+
+  create_table "locations", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "real_property_id"
+    t.uuid "street_id"
+    t.uuid "barangay_id"
+    t.uuid "municipality_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["barangay_id"], name: "index_locations_on_barangay_id"
+    t.index ["municipality_id"], name: "index_locations_on_municipality_id"
+    t.index ["real_property_id"], name: "index_locations_on_real_property_id"
+    t.index ["street_id"], name: "index_locations_on_street_id"
+  end
+
+  create_table "municipalities", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "previous_real_properties", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -84,6 +119,14 @@ ActiveRecord::Schema.define(version: 20171125103512) do
     t.index ["real_property_id"], name: "index_revisions_on_real_property_id"
   end
 
+  create_table "streets", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "barangay_id"
+    t.string "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["barangay_id"], name: "index_streets_on_barangay_id"
+  end
+
   create_table "tax_declarations", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "real_property_id"
     t.string "number"
@@ -118,8 +161,14 @@ ActiveRecord::Schema.define(version: 20171125103512) do
   end
 
   add_foreign_key "assessed_real_properties", "real_properties"
+  add_foreign_key "barangays", "municipalities"
+  add_foreign_key "cancellations", "real_properties"
   add_foreign_key "consolidations", "real_properties"
   add_foreign_key "consolidations", "taxpayers", column: "consolidator_id"
+  add_foreign_key "locations", "barangays"
+  add_foreign_key "locations", "municipalities"
+  add_foreign_key "locations", "real_properties"
+  add_foreign_key "locations", "streets"
   add_foreign_key "previous_real_properties", "real_properties", column: "latest_real_property_id"
   add_foreign_key "previous_real_properties", "real_properties", column: "old_real_property_id"
   add_foreign_key "real_properties", "real_properties", column: "subdivided_real_property_id"
@@ -128,6 +177,7 @@ ActiveRecord::Schema.define(version: 20171125103512) do
   add_foreign_key "real_property_consolidations", "taxpayers", column: "consolidator_id"
   add_foreign_key "real_property_ownerships", "real_properties"
   add_foreign_key "revisions", "real_properties"
+  add_foreign_key "streets", "barangays"
   add_foreign_key "tax_declarations", "real_properties"
   add_foreign_key "transfer_transactions", "real_properties", column: "new_real_property_id"
   add_foreign_key "transfer_transactions", "real_properties", column: "old_real_property_id"

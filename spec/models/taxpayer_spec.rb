@@ -7,5 +7,6 @@ describe Taxpayer do
     it { is_expected.to have_many :received_transferred_real_properties }
     it { is_expected.to have_many :consolidations }
     it { is_expected.to have_many :real_property_consolidations }
+    it { is_expected.to have_many :consolidated_real_properties }
   end
 end

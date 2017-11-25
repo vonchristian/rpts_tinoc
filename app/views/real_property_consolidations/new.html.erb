@@ -3,6 +3,7 @@
 <% end %>
 <hr>
 <% RealProperty.all.each do |real_property| %>
+  <%= real_property.description %>
   <%= simple_form_for [@consolidation, @real_property_consolidation], url: :consolidation_real_property_consolidations do |f| %>
     <%= f.input :real_property_id, input_html: { value: real_property.id } %>
     <%= f.input :consolidator_id, input_html: { value: @consolidation.consolidator_id } %>

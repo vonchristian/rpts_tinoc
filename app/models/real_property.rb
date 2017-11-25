@@ -1,11 +1,11 @@
 class RealProperty < ApplicationRecord
   belongs_to :subdivided_real_property, class_name: "RealProperty", foreign_key: 'subdivided_real_property_id'
 
-  has_one :transfer_transaction, foreign_key: 'old_real_property_id'
-
+  has_one :transfer_transaction, foreign_key: 'old_real_property_id', class_name: "Transactions::TransferTransaction"
+  has_one :location
   has_many :real_property_ownerships, class_name: "Taxpayers::RealPropertyOwnership"
   has_many :taxpayer_property_owners, through: :real_property_ownerships, source: :property_owner, source_type: 'Taxpayer'
-  has_many :revisions
+  has_many :revisions, class_name: "Transactions::Revision"
   has_many :tax_declarations
   has_many :assessed_real_properties
   has_many :real_property_consolidations, class_name: "RealProperties::RealPropertyConsolidation"

@@ -17,7 +17,7 @@ module RealProperties
 
     private
     def revision_params
-      params.require(:revision).permit(:date)
+      params.require(:transactions_revision).permit(:date)
     end
   end
 end

@@ -2,6 +2,7 @@ require 'rails_helper'
 
 describe RealProperty do
   describe 'associations' do
+    it { is_expected.to have_one :location }
     it { is_expected.to have_many :taxpayer_property_owners }
     it { is_expected.to have_many :real_property_ownerships }
     it { is_expected.to have_many :revisions }
