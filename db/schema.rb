@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171123122519) do
+ActiveRecord::Schema.define(version: 20171125061854) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -26,12 +26,44 @@ ActiveRecord::Schema.define(version: 20171123122519) do
     t.index ["real_property_id"], name: "index_assessed_real_properties_on_real_property_id"
   end
 
+  create_table "consolidations", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "consolidator_id"
+    t.uuid "real_property_id"
+    t.datetime "date"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["consolidator_id"], name: "index_consolidations_on_consolidator_id"
+    t.index ["real_property_id"], name: "index_consolidations_on_real_property_id"
+  end
+
   create_table "real_properties", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "type"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "description"
+    t.uuid "subdivided_real_property_id"
+    t.index ["subdivided_real_property_id"], name: "index_real_properties_on_subdivided_real_property_id"
     t.index ["type"], name: "index_real_properties_on_type"
+  end
+
+  create_table "real_property_consolidations", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "real_property_id"
+    t.uuid "consolidation_id"
+    t.uuid "consolidator_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["consolidation_id"], name: "index_real_property_consolidations_on_consolidation_id"
+    t.index ["consolidator_id"], name: "index_real_property_consolidations_on_consolidator_id"
+    t.index ["real_property_id"], name: "index_real_property_consolidations_on_real_property_id"
+  end
+
+  create_table "real_property_ownerships", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "taxpayer_id"
+    t.uuid "real_property_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["real_property_id"], name: "index_real_property_ownerships_on_real_property_id"
+    t.index ["taxpayer_id"], name: "index_real_property_ownerships_on_taxpayer_id"
   end
 
   create_table "revisions", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -52,15 +84,6 @@ ActiveRecord::Schema.define(version: 20171123122519) do
     t.index ["real_property_id"], name: "index_tax_declarations_on_real_property_id"
   end
 
-  create_table "taxpayer_real_properties", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.uuid "taxpayer_id"
-    t.uuid "real_property_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["real_property_id"], name: "index_taxpayer_real_properties_on_real_property_id"
-    t.index ["taxpayer_id"], name: "index_taxpayer_real_properties_on_taxpayer_id"
-  end
-
   create_table "taxpayers", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "first_name"
     t.string "middle_name"
@@ -74,22 +97,28 @@ ActiveRecord::Schema.define(version: 20171123122519) do
 
   create_table "transfer_transactions", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "new_owner_id"
-    t.uuid "previous_owner_id"
-    t.uuid "real_property_id"
+    t.uuid "old_real_property_id"
+    t.uuid "new_real_property_id"
     t.datetime "date_transferred"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["new_owner_id"], name: "index_transfer_transactions_on_new_owner_id"
-    t.index ["previous_owner_id"], name: "index_transfer_transactions_on_previous_owner_id"
-    t.index ["real_property_id"], name: "index_transfer_transactions_on_real_property_id"
+    t.index ["new_real_property_id"], name: "index_transfer_transactions_on_new_real_property_id"
+    t.index ["old_real_property_id"], name: "index_transfer_transactions_on_old_real_property_id"
   end
 
   add_foreign_key "assessed_real_properties", "real_properties"
+  add_foreign_key "consolidations", "real_properties"
+  add_foreign_key "consolidations", "taxpayers", column: "consolidator_id"
+  add_foreign_key "real_properties", "real_properties", column: "subdivided_real_property_id"
+  add_foreign_key "real_property_consolidations", "consolidations"
+  add_foreign_key "real_property_consolidations", "real_properties"
+  add_foreign_key "real_property_consolidations", "taxpayers", column: "consolidator_id"
+  add_foreign_key "real_property_ownerships", "real_properties"
+  add_foreign_key "real_property_ownerships", "taxpayers"
   add_foreign_key "revisions", "real_properties"
   add_foreign_key "tax_declarations", "real_properties"
-  add_foreign_key "taxpayer_real_properties", "real_properties"
-  add_foreign_key "taxpayer_real_properties", "taxpayers"
-  add_foreign_key "transfer_transactions", "real_properties"
+  add_foreign_key "transfer_transactions", "real_properties", column: "new_real_property_id"
+  add_foreign_key "transfer_transactions", "real_properties", column: "old_real_property_id"
   add_foreign_key "transfer_transactions", "taxpayers", column: "new_owner_id"
-  add_foreign_key "transfer_transactions", "taxpayers", column: "previous_owner_id"
 end

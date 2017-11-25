@@ -3,11 +3,14 @@ require 'rails_helper'
 describe RealProperty do
   describe 'associations' do
     it { is_expected.to have_many :taxpayers }
-    it { is_expected.to have_many :taxpayer_real_properties }
+    it { is_expected.to have_many :real_property_ownerships }
     it { is_expected.to have_many :revisions }
     it { is_expected.to have_many :tax_declarations }
     it { is_expected.to have_many :assessed_real_properties }
     it { is_expected.to have_many :transfer_transactions }
+  end
+  describe 'delegations' do
+    it { is_expected.to delegate_method(:name).to(:current_owner).with_prefix }
   end
 
   it '#current_arp' do
@@ -17,4 +20,5 @@ describe RealProperty do
 
     expect(real_property.current_arp.id).to eql(second_arp.id)
   end
+
 end

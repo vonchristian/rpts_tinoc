@@ -1,5 +1,9 @@
+<%= @real_property.subdivided_real_property.try(:description) %>
+<hr>
 <%= @real_property.description %>
-<%= @real_property.current_owner.try(:first_and_last_name) %>
+<hr>
+<%= @real_property.current_owner_name %>
+<hr />
 <%= link_to 'New Revision', new_real_property_revision_path(@real_property) %>
 
 <p>Revisions</p>
@@ -22,3 +26,6 @@
   <%= transfer.new_owner.try(:first_and_last_name) %>
   <%= transfer.date_transferred.try(:strftime, ("%B %e, %Y")) %>
 <% end %>
+
+<%= link_to 'New Subdivision', new_real_property_subdivision_path(@real_property) %>
+<%= link_to 'Add Owner', new_real_property_additional_taxpayer_path(@real_property) %>

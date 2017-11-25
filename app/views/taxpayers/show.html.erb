@@ -4,10 +4,13 @@
   <%= link_to real_property.description, real_property %>
 <% end %>
 <p>Transferred Real Properties</p>
-<% @taxpayer.transferred_real_properties.each do |transfer| %>
+<% @taxpayer.owned_previous_real_properties.each do |transfer| %>
   <%= link_to transfer.real_property_description, transfer.real_property %>
 <% end %>
 <p>Received Real Properties</p>
-<% @taxpayer.received_real_properties.each do |transfer| %>
+<% @taxpayer.received_transferred_real_properties.each do |transfer| %>
   <%= link_to transfer.real_property_description, transfer.real_property %>
 <% end %>
+
+
+<%= link_to 'New Consolidation', new_taxpayer_consolidated_real_property_path(@taxpayer) %>

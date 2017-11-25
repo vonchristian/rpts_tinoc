@@ -1,0 +1,6 @@
+<% Taxpayer.all.each do |taxpayer| %>
+  <%= simple_form_for [@real_property, @additional_taxpayer], url: :real_property_additional_taxpayers do |f| %>
+    <%= f.input :taxpayer_id, input_html: { value: taxpayer.id } %>
+    <%= f.submit "Add Taxpayer" %>
+  <% end %>
+<% end %>

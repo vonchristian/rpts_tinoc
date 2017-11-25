@@ -1,6 +1,9 @@
+<% @real_property.taxpayers.each do |taxpayer| %>
+  <%= taxpayer.first_and_last_name %>
+<% end %>
 <%= simple_form_for [@real_property, @transfer], url: :real_property_transfer_transactions do |f| %>
   <%= f.input :new_owner_id, collection: Taxpayer.all.map{ |a| [a.first_name, a.id] } %>
-  <%= f.input :previous_owner_id, input_html: { value: @real_property.current_owner.id } %>
+  <%#=# f.input :previous_owner_id, input_html: { value: @real_property.current_owner.id } %>
 
   <%= f.input :date_transferred %>
   <%= f.submit "Save Transfer" %>

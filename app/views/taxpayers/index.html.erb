@@ -3,5 +3,5 @@
 
 
 <% @taxpayers.each do |taxpayer| %>
-  <%= link_to taxpayer.first_name, taxpayer_path(taxpayer) %>
+  <%= link_to taxpayer.first_and_last_name, taxpayer_path(taxpayer) %>
 <% end %>

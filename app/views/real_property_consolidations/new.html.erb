@@ -1,0 +1,11 @@
+<% @consolidation.real_properties.each do |real_property| %>
+  <%= link_to real_property.description, real_property %>
+<% end %>
+<hr>
+<% RealProperty.all.each do |real_property| %>
+  <%= simple_form_for [@consolidation, @real_property_consolidation], url: :consolidation_real_property_consolidations do |f| %>
+    <%= f.input :real_property_id, input_html: { value: real_property.id } %>
+    <%= f.input :consolidator_id, input_html: { value: @consolidation.consolidator_id } %>
+    <%= f.submit %>
+  <% end %>
+<% end %>
