@@ -1,0 +1,4 @@
+<%= simple_form_for [@classification, @sub_classification], url: :settings_classification_sub_classifications do |f| %>
+  <%= f.input :name %>
+  <%= f.submit "Save Sub Classification" %>
+<% end %>

@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
   resources :real_properties, only: [:index, :show] do
+    resources :appraisals, only: [:new, :create], module: :real_properties
     resources :additional_taxpayers, only: [:new, :create], module: :real_properties
     resources :subdivisions, only: [:new, :create], module: :real_properties
     resources :revisions, only: [:new, :create], module: :real_properties
@@ -13,6 +14,12 @@ Rails.application.routes.draw do
   end
   resources :consolidations, only: [:show] do
     resources :real_property_consolidations, only: [:new, :create]
+  end
+  resources :settings, only: [:index]
+  namespace :settings do
+    resources :classifications, only: [:show, :new, :create] do
+      resources :sub_classifications, only: [:new, :create]
+    end
   end
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
 end

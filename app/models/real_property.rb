@@ -12,6 +12,8 @@ class RealProperty < ApplicationRecord
   has_many :subdivided_real_properties, class_name: 'RealProperty', foreign_key: 'subdivided_real_property_id'
   has_many :previous_real_properties, foreign_key: 'latest_real_property_id', class_name: "PreviousRealProperty"
 
+  has_many :appraisals
+
   delegate :name, to: :current_owner, prefix: true, allow_nil: true
 
   accepts_nested_attributes_for :tax_declarations

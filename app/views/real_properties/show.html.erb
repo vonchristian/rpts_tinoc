@@ -43,3 +43,11 @@
 <% @real_property.subdivided_real_properties.each do |real_property| %>
   <%= link_to real_property.description, real_property_path(real_property) %>
 <% end %>
+<p>Appraisals</p>
+<%= link_to 'New Appraisal', new_real_property_appraisal_path(@real_property) %>
+<% @real_property.appraisals.each do |appraisal| %>
+  <%= appraisal.classification_name %>
+  <%= appraisal.sub_classification_name %>
+  <%= number_to_currency appraisal.unit_value %>
+  <%= number_to_currency appraisal.market_value %>
+<% end %>

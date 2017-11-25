@@ -10,11 +10,27 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171125123502) do
+ActiveRecord::Schema.define(version: 20171125132802) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
   enable_extension "pgcrypto"
+
+  create_table "appraisals", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "type"
+    t.decimal "unit_value"
+    t.decimal "market_value"
+    t.datetime "date"
+    t.uuid "classification_id"
+    t.uuid "sub_classification_id"
+    t.uuid "real_property_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["classification_id"], name: "index_appraisals_on_classification_id"
+    t.index ["real_property_id"], name: "index_appraisals_on_real_property_id"
+    t.index ["sub_classification_id"], name: "index_appraisals_on_sub_classification_id"
+    t.index ["type"], name: "index_appraisals_on_type"
+  end
 
   create_table "assessed_real_properties", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "real_property_id"
@@ -40,6 +56,13 @@ ActiveRecord::Schema.define(version: 20171125123502) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["real_property_id"], name: "index_cancellations_on_real_property_id"
+  end
+
+  create_table "classifications", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["name"], name: "index_classifications_on_name", unique: true
   end
 
   create_table "consolidations", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -127,6 +150,14 @@ ActiveRecord::Schema.define(version: 20171125123502) do
     t.index ["barangay_id"], name: "index_streets_on_barangay_id"
   end
 
+  create_table "sub_classifications", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "classification_id"
+    t.string "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["classification_id"], name: "index_sub_classifications_on_classification_id"
+  end
+
   create_table "tax_declarations", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "real_property_id"
     t.string "number"
@@ -160,6 +191,9 @@ ActiveRecord::Schema.define(version: 20171125123502) do
     t.index ["old_real_property_id"], name: "index_transfer_transactions_on_old_real_property_id"
   end
 
+  add_foreign_key "appraisals", "classifications"
+  add_foreign_key "appraisals", "real_properties"
+  add_foreign_key "appraisals", "sub_classifications"
   add_foreign_key "assessed_real_properties", "real_properties"
   add_foreign_key "barangays", "municipalities"
   add_foreign_key "cancellations", "real_properties"
@@ -178,6 +212,7 @@ ActiveRecord::Schema.define(version: 20171125123502) do
   add_foreign_key "real_property_ownerships", "real_properties"
   add_foreign_key "revisions", "real_properties"
   add_foreign_key "streets", "barangays"
+  add_foreign_key "sub_classifications", "classifications"
   add_foreign_key "tax_declarations", "real_properties"
   add_foreign_key "transfer_transactions", "real_properties", column: "new_real_property_id"
   add_foreign_key "transfer_transactions", "real_properties", column: "old_real_property_id"

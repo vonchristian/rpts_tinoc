@@ -1,0 +1,7 @@
+<%= simple_form_for [@real_property, @appraisal], url: :real_property_appraisals do |f| %>
+  <%= f.input :classification_id, collection: Configurations::Classification.all.map{|a| [a.name, a.id] } %>
+  <%= f.input :sub_classification_id, collection: Configurations::SubClassification.all.map{|a| [a.name, a.id] } %>
+  <%= f.input :unit_value %>
+  <%= f.input :market_value %>
+  <%= f.submit "Save Appraisal" %>
+<% end %>

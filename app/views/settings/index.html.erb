@@ -1,0 +1,6 @@
+<h4>Settings</h4>
+<%= link_to 'New Classification', new_settings_classification_path %>
+
+<% Configurations::Classification.all.each do |classification| %>
+  <%= link_to classification.name, settings_classification_path(classification) %>
+<% end %>

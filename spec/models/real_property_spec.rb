@@ -9,6 +9,7 @@ describe RealProperty do
     it { is_expected.to have_many :tax_declarations }
     it { is_expected.to have_many :assessed_real_properties }
     it { is_expected.to have_one :transfer_transaction }
+    it { is_expected.to have_many :appraisals }
   end
   describe 'delegations' do
     it { is_expected.to delegate_method(:name).to(:current_owner).with_prefix }
