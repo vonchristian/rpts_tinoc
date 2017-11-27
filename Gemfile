@@ -50,6 +50,7 @@ gem 'dotiw'
 gem "spreadsheet"
 gem 'daemons'
 gem 'delayed-web'
+gem 'numbers_and_words'
 group :development, :test do
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
   gem 'rspec-rails'

@@ -11,6 +11,10 @@ describe RealProperty do
     it { is_expected.to have_one :transfer_transaction }
     it { is_expected.to have_many :appraisals }
   end
+   describe 'enums' do
+    it { is_expected.to define_enum_for(:taxability).with([:taxable, :exempted]) }
+  end
+
   describe 'delegations' do
     it { is_expected.to delegate_method(:name).to(:current_owner).with_prefix }
   end

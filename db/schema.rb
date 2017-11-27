@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171125132802) do
+ActiveRecord::Schema.define(version: 20171127072438) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -109,7 +109,9 @@ ActiveRecord::Schema.define(version: 20171125132802) do
     t.datetime "updated_at", null: false
     t.string "description"
     t.uuid "subdivided_real_property_id"
+    t.integer "taxability"
     t.index ["subdivided_real_property_id"], name: "index_real_properties_on_subdivided_real_property_id"
+    t.index ["taxability"], name: "index_real_properties_on_taxability"
     t.index ["type"], name: "index_real_properties_on_type"
   end
 
