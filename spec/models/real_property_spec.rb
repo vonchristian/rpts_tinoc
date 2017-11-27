@@ -10,6 +10,7 @@ describe RealProperty do
     it { is_expected.to have_many :assessed_real_properties }
     it { is_expected.to have_one :transfer_transaction }
     it { is_expected.to have_many :appraisals }
+    it { is_expected.to have_many :north_property_boundaries }
   end
    describe 'enums' do
     it { is_expected.to define_enum_for(:taxability).with([:taxable, :exempted]) }

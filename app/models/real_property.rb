@@ -13,6 +13,9 @@ class RealProperty < ApplicationRecord
   has_many :previous_real_properties, foreign_key: 'latest_real_property_id', class_name: "PreviousRealProperty"
 
   has_many :appraisals
+  has_many :property_boundaries
+
+  has_many :north_property_boundaries, class_name: "Boundaries::NorthPropertyBoundary"
 
   delegate :name, to: :current_owner, prefix: true, allow_nil: true
 
