@@ -3,5 +3,6 @@
   <%= f.input :sub_classification_id, collection: Configurations::SubClassification.all.map{|a| [a.name, a.id] } %>
   <%= f.input :unit_value %>
   <%= f.input :market_value %>
+  <%= f.input :assessed_value %>
   <%= f.submit "Save Appraisal" %>
 <% end %>

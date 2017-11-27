@@ -18,7 +18,7 @@ module RealProperties
 
     private
     def appraisal_params
-      params.require(:appraisal).permit(:classification_id, :sub_classification_id, :unit_value, :market_value)
+      params.require(:appraisal).permit(:classification_id, :sub_classification_id, :unit_value, :market_value, :assessed_value)
     end
   end
 end

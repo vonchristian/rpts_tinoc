@@ -27,7 +27,7 @@
 <%= link_to 'New Subdivision', new_real_property_subdivision_path(@real_property) %>
 <%= link_to 'Add Owner', new_real_property_additional_taxpayer_path(@real_property) %>
 
-<p>Previous Real PRoperties</p>
+<p>Previous Real Properties</p>
   <% @real_property.previous_real_properties.each do |real_property| %>
     <%= link_to real_property.old_real_property.description, real_property_path(real_property.old_real_property) %>
   <% end %>
@@ -50,6 +50,13 @@
   <%= appraisal.sub_classification_name %>
   <%= number_to_currency appraisal.unit_value %>
   <%= number_to_currency appraisal.market_value %>
+  <%= number_to_currency appraisal.assessed_value %>
 <% end %>
+
 <p>Boundaries</p>
 <%= link_to 'North', new_real_property_north_property_boundary_path(@real_property) %>
+<%= @real_property.north_property_boundaries.current.try(:remarks) %>
+<%= link_to 'South', new_real_property_south_property_boundary_path(@real_property) %>
+<%= @real_property.south_property_boundaries.current.try(:remarks) %>
+
+

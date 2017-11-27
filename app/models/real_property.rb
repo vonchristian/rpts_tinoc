@@ -16,6 +16,8 @@ class RealProperty < ApplicationRecord
   has_many :property_boundaries
 
   has_many :north_property_boundaries, class_name: "Boundaries::NorthPropertyBoundary"
+  has_many :south_property_boundaries, class_name: "Boundaries::SouthPropertyBoundary"
+
 
   delegate :name, to: :current_owner, prefix: true, allow_nil: true
 
