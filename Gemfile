@@ -18,6 +18,7 @@ gem 'jbuilder', '~> 2.5'
 gem 'redis', '~> 3.2'
 gem 'devise'
 gem 'simple_form'
+gem "simple-line-icons-rails"
 gem "select2-rails"
 gem 'jquery-rails'
 gem 'jquery-ui-rails'
