@@ -9,5 +9,8 @@
         <a href="#"><i class="fa fa-circle text-success"></i> <%#=current_user.role.titleize %></a>
       </div>
     </div>
+     <ul class="sidebar-menu">
+          <li class="header"> ACCOUNTING </li>
+           <li class=<%#= 'active' if current_page?(accounting_module_path) %> ><a href="/taxpayers"><i class="icon-people"></i> <span> &nbsp; Taxpayers</span></a></li>
   </section>
 </aside>
