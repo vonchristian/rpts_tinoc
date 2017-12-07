@@ -10,12 +10,7 @@
 <% @real_property.revisions.each do |revision| %>
   <%= revision.date %>
 <% end %>
-<%= link_to 'New Tax Declaration', new_real_property_tax_declaration_path(@real_property) %>
-<p>Tax Declarations</p>
-<% @real_property.tax_declarations.each do |td| %>
-  <%= td.number %>
-  <%= td.cancelled %>
-<% end %>
+
 
 <%= link_to 'New ARP', new_real_property_assessed_real_property_path(@real_property) %>
 <% @real_property.assessed_real_properties.each do |arp| %>
@@ -59,4 +54,20 @@
 <%= link_to 'South', new_real_property_south_property_boundary_path(@real_property) %>
 <%= @real_property.south_property_boundaries.current.try(:remarks) %>
 
+
+<%= link_to 'New Encumberance', new_real_property_encumberance_path(@real_property) %>
+<% @real_property.encumberances.each do |encumberance| %>
+  <%= encumberance.content %>
+<% end %>
+<hr>
+<p> Buildings </p>
+<%= link_to 'Add Building', new_real_property_building_path(@real_property) %>
+<% @real_property.buildings.each do |building| %>
+  <%= building.kind %>
+  <%= building.structural_type %>
+  <%= building.floors.count %> Floors
+  <% building.floors.each do |floor| %>
+    <%= floor.area %>
+  <% end %>
+<% end %>
 

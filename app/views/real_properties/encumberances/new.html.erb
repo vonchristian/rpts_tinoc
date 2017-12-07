@@ -1,0 +1,5 @@
+<%= simple_form_for [@real_property, @encumberance], url: :real_property_encumberances do |f| %>
+  <%= f.input :date %>
+  <%= f.input :content, as: :text %>
+  <%= f.submit "Save" %>
+<% end %>

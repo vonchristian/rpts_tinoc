@@ -12,5 +12,18 @@
      <ul class="sidebar-menu">
           <li class="header"> ACCOUNTING </li>
            <li class=<%#= 'active' if current_page?(accounting_module_path) %> ><a href="/taxpayers"><i class="icon-people"></i> <span> &nbsp; Taxpayers</span></a></li>
+           <li class="treeview">
+          <a href="#">
+            <i class="fa fa-table"></i> <span>Properties</span>
+            <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+          </a>
+          <ul class="treeview-menu">
+            <li><a href="tables/simple.html"><i class="fa fa-circle-o"></i> Land</a></li>
+            <li><a href="/properties/buildings"><i class="fa fa-circle-o"></i> Building</a></li>
+            <li><a href="tables/data.html"><i class="fa fa-circle-o"></i> Machinery</a></li>
+          </ul>
+        </li>
   </section>
 </aside>

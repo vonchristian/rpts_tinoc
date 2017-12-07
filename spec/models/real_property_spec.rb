@@ -6,14 +6,14 @@ describe RealProperty do
     it { is_expected.to have_many :taxpayer_property_owners }
     it { is_expected.to have_many :real_property_ownerships }
     it { is_expected.to have_many :revisions }
-    it { is_expected.to have_many :tax_declarations }
     it { is_expected.to have_many :assessed_real_properties }
     it { is_expected.to have_one :transfer_transaction }
     it { is_expected.to have_many :appraisals }
     it { is_expected.to have_many :property_boundaries }
     it { is_expected.to have_many :north_property_boundaries }
     it { is_expected.to have_many :south_property_boundaries }
-
+    it { is_expected.to have_many :property_administrations }
+    it { is_expected.to have_many :encumberances }
   end
    describe 'enums' do
     it { is_expected.to define_enum_for(:taxability).with([:taxable, :exempted]) }

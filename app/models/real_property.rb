@@ -4,6 +4,8 @@ class RealProperty < ApplicationRecord
   has_one :transfer_transaction, foreign_key: 'old_real_property_id', class_name: "Transactions::TransferTransaction"
   has_one :location
   has_many :real_property_ownerships, class_name: "Taxpayers::RealPropertyOwnership"
+  has_many :property_administrations, class_name: "RealProperties::PropertyAdministration"
+
   has_many :taxpayer_property_owners, through: :real_property_ownerships, source: :property_owner, source_type: 'Taxpayer'
   has_many :revisions, class_name: "Transactions::Revision"
   has_many :tax_declarations
@@ -17,7 +19,7 @@ class RealProperty < ApplicationRecord
 
   has_many :north_property_boundaries, class_name: "Boundaries::NorthPropertyBoundary"
   has_many :south_property_boundaries, class_name: "Boundaries::SouthPropertyBoundary"
-
+  has_many :encumberances
 
   delegate :name, to: :current_owner, prefix: true, allow_nil: true
 

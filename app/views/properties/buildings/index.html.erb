@@ -1,0 +1,13 @@
+<div class="row">
+  <div class="col-md-12">
+    <div class="box box-solid">
+      <div class="box-header with-border">
+        <h3 class="box-title"> Buildings <%= @buildings.count %> </h3>
+      </div>
+      <div class="box-body">
+        <% @buildings.each do |building| %>
+          <%= building.land_reference.try(:description) %>
+        <% end %>
+    </div>
+  </div>
+</div>

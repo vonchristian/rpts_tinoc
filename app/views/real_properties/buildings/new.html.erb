@@ -1,0 +1,10 @@
+<%= simple_form_for [@real_property, @building], url: :real_property_buildings do |f| %>
+  <%= f.simple_fields_for :building_description do |b| %>
+    <%= b.input :kind %>
+    <%= b.input :structural_type %>
+  <% end %>
+  <%= f.simple_fields_for :floors do |ff| %>
+    <%= ff.input :area %>
+  <% end %>
+  <%= f.submit "Save" %>
+<% end %>

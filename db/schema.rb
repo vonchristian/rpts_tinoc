@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171127125909) do
+ActiveRecord::Schema.define(version: 20171207133424) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -51,6 +51,19 @@ ActiveRecord::Schema.define(version: 20171127125909) do
     t.index ["municipality_id"], name: "index_barangays_on_municipality_id"
   end
 
+  create_table "building_descriptions", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "building_id"
+    t.string "kind"
+    t.string "structural_type"
+    t.datetime "certififate_of_completion_issued_on"
+    t.datetime "certificate_of_occupancy_issued_on"
+    t.datetime "date_constructed"
+    t.datetime "date_occupied"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["building_id"], name: "index_building_descriptions_on_building_id"
+  end
+
   create_table "cancellations", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "real_property_id"
     t.datetime "date_cancelled"
@@ -74,6 +87,23 @@ ActiveRecord::Schema.define(version: 20171127125909) do
     t.datetime "updated_at", null: false
     t.index ["consolidator_id"], name: "index_consolidations_on_consolidator_id"
     t.index ["real_property_id"], name: "index_consolidations_on_real_property_id"
+  end
+
+  create_table "encumberances", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.text "content"
+    t.uuid "real_property_id"
+    t.datetime "date"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["real_property_id"], name: "index_encumberances_on_real_property_id"
+  end
+
+  create_table "floors", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "building_id"
+    t.decimal "area"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["building_id"], name: "index_floors_on_building_id"
   end
 
   create_table "locations", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -104,6 +134,16 @@ ActiveRecord::Schema.define(version: 20171127125909) do
     t.index ["old_real_property_id"], name: "index_previous_real_properties_on_old_real_property_id"
   end
 
+  create_table "property_administrations", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "real_property_id"
+    t.string "administrator_type"
+    t.uuid "administrator_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["administrator_type", "administrator_id"], name: "index_on_administrator_on_property_administrations"
+    t.index ["real_property_id"], name: "index_property_administrations_on_real_property_id"
+  end
+
   create_table "property_boundaries", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "real_property_id"
     t.string "type"
@@ -121,6 +161,8 @@ ActiveRecord::Schema.define(version: 20171127125909) do
     t.string "description"
     t.uuid "subdivided_real_property_id"
     t.integer "taxability"
+    t.uuid "land_reference_id"
+    t.index ["land_reference_id"], name: "index_real_properties_on_land_reference_id"
     t.index ["subdivided_real_property_id"], name: "index_real_properties_on_subdivided_real_property_id"
     t.index ["taxability"], name: "index_real_properties_on_taxability"
     t.index ["type"], name: "index_real_properties_on_type"
@@ -192,6 +234,17 @@ ActiveRecord::Schema.define(version: 20171127125909) do
     t.index ["email"], name: "index_taxpayers_on_email", unique: true
   end
 
+  create_table "tins", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "tinable_type"
+    t.uuid "tinable_id"
+    t.datetime "date_issued"
+    t.string "number"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["number"], name: "index_tins_on_number", unique: true
+    t.index ["tinable_type", "tinable_id"], name: "index_tins_on_tinable_type_and_tinable_id"
+  end
+
   create_table "transfer_transactions", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "new_owner_id"
     t.uuid "old_real_property_id"
@@ -209,16 +262,21 @@ ActiveRecord::Schema.define(version: 20171127125909) do
   add_foreign_key "appraisals", "sub_classifications"
   add_foreign_key "assessed_real_properties", "real_properties"
   add_foreign_key "barangays", "municipalities"
+  add_foreign_key "building_descriptions", "real_properties", column: "building_id"
   add_foreign_key "cancellations", "real_properties"
   add_foreign_key "consolidations", "real_properties"
   add_foreign_key "consolidations", "taxpayers", column: "consolidator_id"
+  add_foreign_key "encumberances", "real_properties"
+  add_foreign_key "floors", "real_properties", column: "building_id"
   add_foreign_key "locations", "barangays"
   add_foreign_key "locations", "municipalities"
   add_foreign_key "locations", "real_properties"
   add_foreign_key "locations", "streets"
   add_foreign_key "previous_real_properties", "real_properties", column: "latest_real_property_id"
   add_foreign_key "previous_real_properties", "real_properties", column: "old_real_property_id"
+  add_foreign_key "property_administrations", "real_properties"
   add_foreign_key "property_boundaries", "real_properties"
+  add_foreign_key "real_properties", "real_properties", column: "land_reference_id"
   add_foreign_key "real_properties", "real_properties", column: "subdivided_real_property_id"
   add_foreign_key "real_property_consolidations", "consolidations"
   add_foreign_key "real_property_consolidations", "real_properties"

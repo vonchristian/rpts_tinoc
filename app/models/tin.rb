@@ -1,0 +1,2 @@
+class Tin < ApplicationRecord
+end
