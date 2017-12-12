@@ -10,11 +10,25 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171207133424) do
+ActiveRecord::Schema.define(version: 20171212131312) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
   enable_extension "pgcrypto"
+
+  create_table "addresses", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "addressable_type"
+    t.uuid "addressable_id"
+    t.uuid "street_id"
+    t.uuid "barangay_id"
+    t.uuid "municipality_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["addressable_type", "addressable_id"], name: "index_addresses_on_addressable_type_and_addressable_id"
+    t.index ["barangay_id"], name: "index_addresses_on_barangay_id"
+    t.index ["municipality_id"], name: "index_addresses_on_municipality_id"
+    t.index ["street_id"], name: "index_addresses_on_street_id"
+  end
 
   create_table "appraisals", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "type"
@@ -154,6 +168,13 @@ ActiveRecord::Schema.define(version: 20171207133424) do
     t.index ["type"], name: "index_property_boundaries_on_type"
   end
 
+  create_table "provinces", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["name"], name: "index_provinces_on_name", unique: true
+  end
+
   create_table "real_properties", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "type"
     t.datetime "created_at", null: false
@@ -257,6 +278,9 @@ ActiveRecord::Schema.define(version: 20171207133424) do
     t.index ["old_real_property_id"], name: "index_transfer_transactions_on_old_real_property_id"
   end
 
+  add_foreign_key "addresses", "barangays"
+  add_foreign_key "addresses", "municipalities"
+  add_foreign_key "addresses", "streets"
   add_foreign_key "appraisals", "classifications"
   add_foreign_key "appraisals", "real_properties"
   add_foreign_key "appraisals", "sub_classifications"
