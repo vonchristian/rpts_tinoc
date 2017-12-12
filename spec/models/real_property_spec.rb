@@ -14,6 +14,10 @@ describe RealProperty do
     it { is_expected.to have_many :south_property_boundaries }
     it { is_expected.to have_many :property_administrations }
     it { is_expected.to have_many :encumberances }
+    it { is_expected.to have_many :north_property_boundaries }
+    it { is_expected.to have_many :south_property_boundaries }
+    it { is_expected.to have_many :east_property_boundaries }
+    it { is_expected.to have_many :west_property_boundaries }
   end
    describe 'enums' do
     it { is_expected.to define_enum_for(:taxability).with([:taxable, :exempted]) }

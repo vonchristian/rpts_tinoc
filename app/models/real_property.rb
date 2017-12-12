@@ -7,19 +7,25 @@ class RealProperty < ApplicationRecord
   has_many :property_administrations, class_name: "RealProperties::PropertyAdministration"
 
   has_many :taxpayer_property_owners, through: :real_property_ownerships, source: :property_owner, source_type: 'Taxpayer'
+  ##Transactions
   has_many :revisions, class_name: "Transactions::Revision"
-  has_many :tax_declarations
-  has_many :assessed_real_properties
   has_many :real_property_consolidations, class_name: "RealProperties::RealPropertyConsolidation"
   has_many :subdivided_real_properties, class_name: 'RealProperty', foreign_key: 'subdivided_real_property_id'
+
+  has_many :tax_declarations
+  has_many :assessed_real_properties
   has_many :previous_real_properties, foreign_key: 'latest_real_property_id', class_name: "PreviousRealProperty"
 
   has_many :appraisals
   has_many :property_boundaries
+  ##Boundaries
+  has_many :north_property_boundaries, class_name: "RealProperties::Boundaries::NorthPropertyBoundary"
+  has_many :south_property_boundaries, class_name: "RealProperties::Boundaries::SouthPropertyBoundary"
+  has_many :east_property_boundaries, class_name: "RealProperties::Boundaries::EastPropertyBoundary"
+  has_many :west_property_boundaries, class_name: "RealProperties::Boundaries::WestPropertyBoundary"
 
-  has_many :north_property_boundaries, class_name: "Boundaries::NorthPropertyBoundary"
-  has_many :south_property_boundaries, class_name: "Boundaries::SouthPropertyBoundary"
   has_many :encumberances
+  has_many :buildings, class_name: "RealProperties::PropertyTypes::Building", foreign_key: 'land_reference_id'
 
   delegate :name, to: :current_owner, prefix: true, allow_nil: true
 

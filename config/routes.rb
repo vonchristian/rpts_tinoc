@@ -12,9 +12,13 @@ Rails.application.routes.draw do
     resources :encumberances, only: [:new, :create], module: :real_properties
     resources :buildings, only: [:new, :create], module: :real_properties
   end
+
   namespace :properties do
     resources :buildings, only: [:index]
+    resources :lands, only: [:index]
+    resources :machineries, only: [:index]
   end
+
   resources :taxpayers, only: [:index, :new, :create, :show] do
     resources :real_properties, only: [:new, :create], module: :taxpayers
     resources :consolidated_real_properties, only: [:new, :create], module: :taxpayers

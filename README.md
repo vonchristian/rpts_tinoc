@@ -32,3 +32,10 @@ has_many subdivi
 
 export to excel
 a/r payments
+
+
+PROPOSAL
+P890, 000.00 Capitol
+P 165, 000.00 per municipality
+_______________________-______
+
