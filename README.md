@@ -39,3 +39,4 @@ P890, 000.00 Capitol
 P 165, 000.00 per municipality
 _______________________-______
 
+prepare proposal and demo on January 15
