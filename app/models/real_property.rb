@@ -33,6 +33,9 @@ class RealProperty < ApplicationRecord
   delegate :name, to: :current_owner, prefix: true, allow_nil: true
   delegate :market_value, to: :sub_classification, prefix: true
   delegate :assessment_level, to: :classification, prefix: true
+  def taxpayers_name
+    property_owners.map{|a| a.name }.join(" ")
+  end
 
   def assessed_value
     adjusted_market_value * classification_assessment_level

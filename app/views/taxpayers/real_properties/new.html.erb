@@ -1,5 +1,9 @@
-<%= simple_form_for [@taxpayer, @real_property] do |f| %>
+<%= simple_form_for [@taxpayer, @real_property], url: :taxpayer_real_properties do |f| %>
+  <%= f.input :sub_classification_id, collection: Configurations::SubClassification.all.map{|a| [a.name, a.id] } %>
+  <%= f.input :classification_id, collection: Configurations::Classification.all.map{|a| [a.name, a.id] } %>
+  <%= f.input :area %>
   <%= f.input :description %>
   <%= f.input :type, collection: RealProperty.types.map{|a| [a, a] } %>
+  <%= f.input :taxpayer_id, input_html: { value: @taxpayer.id } %>
   <%= f.submit "Save Real Property" %>
 <% end %>
