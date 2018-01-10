@@ -20,7 +20,7 @@ module RealProperties
 
     private
     def transfer_transaction_params
-      params.require(:transfer_transaction).permit(:new_owner_id, :old_real_property_id,:date_transferred, new_real_property_attributes: [:description] )
+      params.require(:transactions_transfer_transaction).permit(:new_owner_id, :old_real_property_id,:date_transferred, new_real_property_attributes: [:description] )
     end
   end
 end

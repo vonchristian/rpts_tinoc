@@ -236,16 +236,6 @@ ActiveRecord::Schema.define(version: 20180110013942) do
     t.index ["classification_id"], name: "index_sub_classifications_on_classification_id"
   end
 
-  create_table "tax_declarations", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.uuid "real_property_id"
-    t.string "number"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.boolean "cancelled", default: false
-    t.index ["number"], name: "index_tax_declarations_on_number", unique: true
-    t.index ["real_property_id"], name: "index_tax_declarations_on_real_property_id"
-  end
-
   create_table "taxpayers", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "first_name"
     t.string "middle_name"
@@ -312,7 +302,6 @@ ActiveRecord::Schema.define(version: 20180110013942) do
   add_foreign_key "revisions", "real_properties"
   add_foreign_key "streets", "barangays"
   add_foreign_key "sub_classifications", "classifications"
-  add_foreign_key "tax_declarations", "real_properties"
   add_foreign_key "transfer_transactions", "real_properties", column: "new_real_property_id"
   add_foreign_key "transfer_transactions", "real_properties", column: "old_real_property_id"
   add_foreign_key "transfer_transactions", "taxpayers", column: "new_owner_id"

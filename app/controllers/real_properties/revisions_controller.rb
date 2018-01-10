@@ -8,8 +8,7 @@ module RealProperties
        @real_property = RealProperty.find(params[:real_property_id])
       @revision = @real_property.revisions.create(revision_params)
       if @revision.save
-         TaxDeclaration.cancel_all
-        redirect_to @real_property, notice: "Revision saved successfully"
+        redirect_to real_property_url(@real_property), notice: "Revision saved successfully"
       else
         render :new
       end

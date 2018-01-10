@@ -1,7 +1,7 @@
 module Properties
   class BuildingsController < ApplicationController
     def index
-      @buildings = RealProperties::Building.all
+      @buildings = RealProperties::PropertyTypes::Building.all
     end
   end
 end
