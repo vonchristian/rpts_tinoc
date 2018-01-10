@@ -1,5 +1,6 @@
 class RealProperty < ApplicationRecord
   enum taxability: [:taxable, :exempted]
+  belongs_to :sub_classification, class_name: "Configurations::SubClassification"
   belongs_to :subdivided_real_property, class_name: "RealProperty", foreign_key: 'subdivided_real_property_id'
   has_one :location
   has_many :real_property_ownerships, class_name: "Taxpayers::RealPropertyOwnership"
@@ -28,6 +29,11 @@ class RealProperty < ApplicationRecord
   has_many :encumberances
 
   delegate :name, to: :current_owner, prefix: true, allow_nil: true
+  delegate :market_value, to: :sub_classification, prefix: true
+
+  def market_value
+    area * sub_classification_market_value
+  end
 
   def self.types
     ["RealProperties::PropertyTypes::Land"]

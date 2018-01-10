@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180110053330) do
+ActiveRecord::Schema.define(version: 20180110073831) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -133,6 +133,16 @@ ActiveRecord::Schema.define(version: 20180110053330) do
     t.index ["street_id"], name: "index_locations_on_street_id"
   end
 
+  create_table "market_value_revisions", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "sub_classification_id"
+    t.decimal "market_value"
+    t.string "unit"
+    t.date "effectivity_date"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["sub_classification_id"], name: "index_market_value_revisions_on_sub_classification_id"
+  end
+
   create_table "municipalities", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "name"
     t.datetime "created_at", null: false
@@ -192,7 +202,10 @@ ActiveRecord::Schema.define(version: 20180110053330) do
     t.uuid "subdivided_real_property_id"
     t.integer "taxability"
     t.uuid "land_reference_id"
+    t.uuid "sub_classification_id"
+    t.decimal "area"
     t.index ["land_reference_id"], name: "index_real_properties_on_land_reference_id"
+    t.index ["sub_classification_id"], name: "index_real_properties_on_sub_classification_id"
     t.index ["subdivided_real_property_id"], name: "index_real_properties_on_subdivided_real_property_id"
     t.index ["taxability"], name: "index_real_properties_on_taxability"
     t.index ["type"], name: "index_real_properties_on_type"
@@ -295,6 +308,7 @@ ActiveRecord::Schema.define(version: 20180110053330) do
   add_foreign_key "locations", "municipalities"
   add_foreign_key "locations", "real_properties"
   add_foreign_key "locations", "streets"
+  add_foreign_key "market_value_revisions", "sub_classifications"
   add_foreign_key "municipalities", "provinces"
   add_foreign_key "previous_real_properties", "real_properties", column: "latest_real_property_id"
   add_foreign_key "previous_real_properties", "real_properties", column: "old_real_property_id"
@@ -302,6 +316,7 @@ ActiveRecord::Schema.define(version: 20180110053330) do
   add_foreign_key "property_boundaries", "real_properties"
   add_foreign_key "real_properties", "real_properties", column: "land_reference_id"
   add_foreign_key "real_properties", "real_properties", column: "subdivided_real_property_id"
+  add_foreign_key "real_properties", "sub_classifications"
   add_foreign_key "real_property_consolidations", "consolidations"
   add_foreign_key "real_property_consolidations", "real_properties"
   add_foreign_key "real_property_consolidations", "taxpayers", column: "consolidator_id"
