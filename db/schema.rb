@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180110013942) do
+ActiveRecord::Schema.define(version: 20180110053330) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -139,6 +139,13 @@ ActiveRecord::Schema.define(version: 20180110013942) do
     t.datetime "updated_at", null: false
     t.uuid "province_id"
     t.index ["province_id"], name: "index_municipalities_on_province_id"
+  end
+
+  create_table "penalty_configs", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.integer "max_no_month"
+    t.decimal "penalty_rate"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "previous_real_properties", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
