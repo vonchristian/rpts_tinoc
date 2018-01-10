@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171212131312) do
+ActiveRecord::Schema.define(version: 20180110013942) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -137,6 +137,8 @@ ActiveRecord::Schema.define(version: 20171212131312) do
     t.string "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.uuid "province_id"
+    t.index ["province_id"], name: "index_municipalities_on_province_id"
   end
 
   create_table "previous_real_properties", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -296,6 +298,7 @@ ActiveRecord::Schema.define(version: 20171212131312) do
   add_foreign_key "locations", "municipalities"
   add_foreign_key "locations", "real_properties"
   add_foreign_key "locations", "streets"
+  add_foreign_key "municipalities", "provinces"
   add_foreign_key "previous_real_properties", "real_properties", column: "latest_real_property_id"
   add_foreign_key "previous_real_properties", "real_properties", column: "old_real_property_id"
   add_foreign_key "property_administrations", "real_properties"
