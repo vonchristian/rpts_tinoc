@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180110073831) do
+ActiveRecord::Schema.define(version: 20180110081209) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -28,6 +28,14 @@ ActiveRecord::Schema.define(version: 20180110073831) do
     t.index ["barangay_id"], name: "index_addresses_on_barangay_id"
     t.index ["municipality_id"], name: "index_addresses_on_municipality_id"
     t.index ["street_id"], name: "index_addresses_on_street_id"
+  end
+
+  create_table "adjustment_factors", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "name"
+    t.decimal "percent", default: "0.0"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["name"], name: "index_adjustment_factors_on_name", unique: true
   end
 
   create_table "appraisals", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -55,6 +63,15 @@ ActiveRecord::Schema.define(version: 20180110073831) do
     t.datetime "updated_at", null: false
     t.index ["number"], name: "index_assessed_real_properties_on_number", unique: true
     t.index ["real_property_id"], name: "index_assessed_real_properties_on_real_property_id"
+  end
+
+  create_table "assessment_levels", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "classification_id"
+    t.decimal "percent"
+    t.date "effectivity_date"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["classification_id"], name: "index_assessment_levels_on_classification_id"
   end
 
   create_table "barangays", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -133,6 +150,15 @@ ActiveRecord::Schema.define(version: 20180110073831) do
     t.index ["street_id"], name: "index_locations_on_street_id"
   end
 
+  create_table "market_value_adjustments", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "real_property_id"
+    t.uuid "adjustment_factor_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["adjustment_factor_id"], name: "index_market_value_adjustments_on_adjustment_factor_id"
+    t.index ["real_property_id"], name: "index_market_value_adjustments_on_real_property_id"
+  end
+
   create_table "market_value_revisions", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "sub_classification_id"
     t.decimal "market_value"
@@ -204,6 +230,8 @@ ActiveRecord::Schema.define(version: 20180110073831) do
     t.uuid "land_reference_id"
     t.uuid "sub_classification_id"
     t.decimal "area"
+    t.uuid "classification_id"
+    t.index ["classification_id"], name: "index_real_properties_on_classification_id"
     t.index ["land_reference_id"], name: "index_real_properties_on_land_reference_id"
     t.index ["sub_classification_id"], name: "index_real_properties_on_sub_classification_id"
     t.index ["subdivided_real_property_id"], name: "index_real_properties_on_subdivided_real_property_id"
@@ -297,6 +325,7 @@ ActiveRecord::Schema.define(version: 20180110073831) do
   add_foreign_key "appraisals", "real_properties"
   add_foreign_key "appraisals", "sub_classifications"
   add_foreign_key "assessed_real_properties", "real_properties"
+  add_foreign_key "assessment_levels", "classifications"
   add_foreign_key "barangays", "municipalities"
   add_foreign_key "building_descriptions", "real_properties", column: "building_id"
   add_foreign_key "cancellations", "real_properties"
@@ -308,12 +337,15 @@ ActiveRecord::Schema.define(version: 20180110073831) do
   add_foreign_key "locations", "municipalities"
   add_foreign_key "locations", "real_properties"
   add_foreign_key "locations", "streets"
+  add_foreign_key "market_value_adjustments", "adjustment_factors"
+  add_foreign_key "market_value_adjustments", "real_properties"
   add_foreign_key "market_value_revisions", "sub_classifications"
   add_foreign_key "municipalities", "provinces"
   add_foreign_key "previous_real_properties", "real_properties", column: "latest_real_property_id"
   add_foreign_key "previous_real_properties", "real_properties", column: "old_real_property_id"
   add_foreign_key "property_administrations", "real_properties"
   add_foreign_key "property_boundaries", "real_properties"
+  add_foreign_key "real_properties", "classifications"
   add_foreign_key "real_properties", "real_properties", column: "land_reference_id"
   add_foreign_key "real_properties", "real_properties", column: "subdivided_real_property_id"
   add_foreign_key "real_properties", "sub_classifications"

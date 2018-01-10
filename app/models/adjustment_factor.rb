@@ -1,0 +1,2 @@
+class AdjustmentFactor < ApplicationRecord
+end

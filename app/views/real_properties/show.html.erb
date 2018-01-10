@@ -1,10 +1,20 @@
 Market Value <%= @real_property.market_value %>
+Market Value Adjustments
+<% @real_property.market_value_adjustments.each do |market_value_adjustment| %>
+  <%= market_value_adjustment.name %>
+  <%= market_value_adjustment.percent %>
+  <%= market_value_adjustment.value_adjustment %>
+<% end %>
+Total <%= @real_property.market_value_adjustments.total %>
+Adjusted Market Value <%= number_to_currency @real_property.adjusted_market_value %>
+<hr>
 <%= @real_property.subdivided_real_property.try(:description) %>
 <hr>
 <%= @real_property.description %>
 <hr>
 <%= @real_property.current_owner_name %>
 <hr />
+Assessed Value: <%= number_to_currency @real_property.assessed_value %>
 <%= link_to 'New Revision', new_real_property_revision_path(@real_property) %>
 
 <p>Revisions</p>

@@ -1,8 +1,10 @@
 class RealProperty < ApplicationRecord
   enum taxability: [:taxable, :exempted]
+  belongs_to :classification, class_name: "Configurations::Classification"
   belongs_to :sub_classification, class_name: "Configurations::SubClassification"
   belongs_to :subdivided_real_property, class_name: "RealProperty", foreign_key: 'subdivided_real_property_id'
   has_one :location
+  has_many :market_value_adjustments
   has_many :real_property_ownerships, class_name: "Taxpayers::RealPropertyOwnership"
   has_many :property_administrations, class_name: "RealProperties::PropertyAdministration"
   has_many :property_owners, through: :real_property_ownerships, source: :property_owner, source_type: 'Taxpayer'
@@ -30,7 +32,15 @@ class RealProperty < ApplicationRecord
 
   delegate :name, to: :current_owner, prefix: true, allow_nil: true
   delegate :market_value, to: :sub_classification, prefix: true
+  delegate :assessment_level, to: :classification, prefix: true
 
+  def assessed_value
+    adjusted_market_value * classification_assessment_level
+  end
+
+  def adjusted_market_value
+    market_value + market_value_adjustments.total
+  end
   def market_value
     area * sub_classification_market_value
   end
