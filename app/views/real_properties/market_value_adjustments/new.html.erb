@@ -1,0 +1,8 @@
+
+  <%= simple_form_for [@real_property, @adjustment], url: :real_property_market_value_adjustments do |f| %>
+    <%= f.input :adjustment_factor_id, collection: Configurations::AdjustmentFactor.all.map{|a| [a.name_and_percent, a.id] } %>
+    <%= f.input :effectivity_date, input_html: { class: "datepicker" } %>
+    <%= f.input :remarks, as: :text %>
+    <%= f.input :real_property_id, input_html: { value: @real_property.id } %>
+    <%= f.submit "Add" %>
+  <% end %>

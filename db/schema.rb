@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180111013655) do
+ActiveRecord::Schema.define(version: 20180111033135) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -212,11 +212,19 @@ ActiveRecord::Schema.define(version: 20180111013655) do
     t.uuid "subdivided_real_property_id"
     t.integer "taxability"
     t.uuid "land_reference_id"
-    t.decimal "area"
     t.index ["land_reference_id"], name: "index_real_properties_on_land_reference_id"
     t.index ["subdivided_real_property_id"], name: "index_real_properties_on_subdivided_real_property_id"
     t.index ["taxability"], name: "index_real_properties_on_taxability"
     t.index ["type"], name: "index_real_properties_on_type"
+  end
+
+  create_table "real_property_areas", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.decimal "area"
+    t.uuid "real_property_id"
+    t.datetime "effectivity_date"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["real_property_id"], name: "index_real_property_areas_on_real_property_id"
   end
 
   create_table "real_property_classifications", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -258,6 +266,18 @@ ActiveRecord::Schema.define(version: 20180111013655) do
     t.datetime "updated_at", null: false
     t.index ["real_property_id"], name: "index_real_property_sub_classifications_on_real_property_id"
     t.index ["sub_classification_id"], name: "index_sub_classification_on_real_property_sub_classifications"
+  end
+
+  create_table "revisions", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "real_property_id"
+    t.string "revised_data_type"
+    t.uuid "revised_data_id"
+    t.datetime "effectivity_date", null: false
+    t.text "remarks", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["real_property_id"], name: "index_revisions_on_real_property_id"
+    t.index ["revised_data_type", "revised_data_id"], name: "index_revisions_on_revised_data_type_and_revised_data_id"
   end
 
   create_table "streets", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -336,6 +356,7 @@ ActiveRecord::Schema.define(version: 20180111013655) do
   add_foreign_key "property_boundaries", "real_properties"
   add_foreign_key "real_properties", "real_properties", column: "land_reference_id"
   add_foreign_key "real_properties", "real_properties", column: "subdivided_real_property_id"
+  add_foreign_key "real_property_areas", "real_properties"
   add_foreign_key "real_property_classifications", "classifications"
   add_foreign_key "real_property_classifications", "real_properties"
   add_foreign_key "real_property_consolidations", "consolidations"
@@ -344,6 +365,7 @@ ActiveRecord::Schema.define(version: 20180111013655) do
   add_foreign_key "real_property_ownerships", "real_properties"
   add_foreign_key "real_property_sub_classifications", "real_properties"
   add_foreign_key "real_property_sub_classifications", "sub_classifications"
+  add_foreign_key "revisions", "real_properties"
   add_foreign_key "streets", "barangays"
   add_foreign_key "sub_classifications", "classifications"
   add_foreign_key "transfer_transactions", "real_properties", column: "new_real_property_id"

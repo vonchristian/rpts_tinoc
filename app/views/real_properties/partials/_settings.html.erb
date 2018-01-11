@@ -10,6 +10,7 @@
   <%= @real_property.current_sub_classification_current_market_value %>
 <hr>
 <h4>Market Value Adjustments</h4>
+<%= link_to "Add Adjustment", new_real_property_market_value_adjustment_path(@real_property), class: "btn btn-danger" %>
 <% @real_property.market_value_adjustments.each do |market_value_adjustment| %>
   <div class="row">
     <div class="col-md-5">
@@ -38,3 +39,6 @@
   </div>
 </div>
 <hr>
+<h4>Area</h4>
+<%= @real_property.current_area %>
+<%= link_to 'Change', new_real_property_real_property_area_path(@real_property), class: "btn btn-danger" %>

@@ -1,5 +1,8 @@
 Rails.application.routes.draw do
   resources :real_properties, only: [:index, :show] do
+    resources :revisions, only: [:index], module: :real_properties
+    resources :market_value_adjustments, only: [:new, :create], module: :real_properties
+    resources :real_property_areas, only: [:new, :create], module: :real_properties
     resources :classifications, only: [:new, :create], module: :real_properties
     resources :settings, only: [:index], module: :real_properties
     resources :north_property_boundaries, only: [:new, :create], module: :real_properties
@@ -28,9 +31,13 @@ Rails.application.routes.draw do
   end
   resources :settings, only: [:index]
   namespace :settings do
+    resources :adjustment_factors, only: [:new, :create]
     resources :classifications, only: [:show, :new, :create] do
       resources :sub_classifications, only: [:new, :create]
       resources :assessment_levels, only: [:new, :create], module: :classifications
+    end
+    resources :sub_classifications, only: [:show] do
+      resources :market_values, only: [:new, :create]
     end
   end
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html

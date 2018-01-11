@@ -1,0 +1,16 @@
+<h4>Revisions</h4>
+<% @real_property.revisions.each do |revision| %>
+  <div class="row">
+    <div class="col-md-3">
+      <%= revision.effectivity_date.strftime("%B %e, %Y") %>
+      <%= number_to_currency revision.try(:assessed_value) %>
+    </div>
+    <div class="col-md-5">
+      <%= revision.remarks %>
+    </div>
+    <div class="col-md-3">
+      <%= revision.revised_data %>
+    </div>
+  </div>
+  <hr>
+<% end %>

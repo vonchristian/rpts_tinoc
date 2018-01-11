@@ -17,7 +17,7 @@ module Settings
 
       private
       def assessment_level_params
-        params.require(:assessment_level).permit(:percent, :effectivity_date)
+        params.require(:configurations_assessment_level).permit(:percent, :effectivity_date)
       end
     end
   end

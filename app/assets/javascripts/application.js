@@ -15,7 +15,6 @@
 //= require bootstrap-sprockets
 //= require bootstrap-datepicker
 //= require moment
-//= require bootstrap-datetimepicker
 //= require icheck
 //= require select2
 //= require trix

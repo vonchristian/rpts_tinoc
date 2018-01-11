@@ -2,6 +2,7 @@ class RealProperty < ApplicationRecord
   enum taxability: [:taxable, :exempted]
   belongs_to :subdivided_real_property, class_name: "RealProperty", foreign_key: 'subdivided_real_property_id'
   has_one :location
+  has_many :real_property_areas, class_name: "RealProperties::RealPropertyArea"
   has_many :market_value_adjustments, class_name: "RealProperties::MarketValueAdjustment"
   has_many :real_property_ownerships, class_name: "Taxpayers::RealPropertyOwnership"
   has_many :property_administrations, class_name: "RealProperties::PropertyAdministration"
@@ -25,7 +26,7 @@ class RealProperty < ApplicationRecord
   has_many :buildings, class_name: "RealProperties::PropertyTypes::Building", foreign_key: 'land_reference_id'
 
   has_many :encumberances, class_name: "RealProperties::Encumberance"
-
+  has_many :revisions
   has_many :real_property_classifications, class_name: "RealProperties::RealPropertyClassification"
   has_many :classifications, through: :real_property_classifications, class_name: "Configurations::Classification"
 
@@ -48,18 +49,18 @@ class RealProperty < ApplicationRecord
   end
 
   def assessed_value(options={})
-    if options[:from_date] && options[:to_date]
-     0
-    else
-      adjusted_market_value(options) * current_classification_assessment_level
-    end
+    adjusted_market_value(options) * current_classification_assessment_level
   end
 
   def adjusted_market_value(options={})
-    market_value + market_value_adjustments.total
+    market_value(options) + market_value_adjustments.total(options)
   end
-  def market_value
-    area * current_sub_classification_current_market_value
+  def market_value(options={})
+    current_area(options) * current_sub_classification_current_market_value
+  end
+
+  def current_area(options={})
+    real_property_areas.current(options)
   end
 
   def self.types

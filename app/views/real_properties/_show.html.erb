@@ -9,7 +9,7 @@
           <li class="<%= 'active' if current_page?(real_property_path(@real_property))%>"><%= link_to 'Info', real_property_path(@real_property) %></li>
           <li class="<%= 'active' if current_page?(real_property_path(@real_property))%>"><%= link_to 'History', real_property_path(@real_property) %></li>
           <li class="<%= 'active' if current_page?(real_property_path(@real_property))%>"><%= link_to 'Encumberances', real_property_path(@real_property) %></li>
-
+           <li class="<%= 'active' if current_page?(real_property_revisions_path(@real_property))%>"><%= link_to 'Revisions', real_property_revisions_path(@real_property) %></li>
 
           <li class="<%= 'active' if current_page?(real_property_settings_path(@real_property))%>"><%= link_to 'Settings', real_property_settings_path(@real_property) %></li>
         </ul>
@@ -18,5 +18,8 @@
             <%= render 'real_properties/partials/info' %>
           <% elsif current_page? real_property_settings_path(@real_property) %>
             <%= render 'real_properties/partials/settings' %>
+          <% elsif current_page? real_property_revisions_path(@real_property) %>
+            <%= render 'real_properties/partials/revisions' %>
+
           <% end %>
         </div>

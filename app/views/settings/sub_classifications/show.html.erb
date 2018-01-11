@@ -1,0 +1,7 @@
+<%= link_to 'New Market Value', new_settings_sub_classification_market_value_path(@sub_classification) %>
+
+<% @sub_classification.market_values.each do |market_value| %>
+  <%=number_to_currency market_value.market_value %>
+  <%= market_value.unit %>
+  <%= market_value.effectivity_date %>
+<% end %>

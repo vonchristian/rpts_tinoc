@@ -4,3 +4,6 @@
 <% Configurations::Classification.all.each do |classification| %>
   <%= link_to classification.name, settings_classification_path(classification) %>
 <% end %>
+
+<h4> Adjustment Factors </h4>
+<%= link_to "New", new_settings_adjustment_factor_path %>

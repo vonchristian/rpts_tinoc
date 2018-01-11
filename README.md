@@ -41,4 +41,9 @@ _______________________-______
 
 prepare proposal and demo on January 15
 
-create settings page
+create settings page DONE
+REFACTOR
+rename market_value to fair_market_value
+
+
+HOW TO COMPUTE ASSESSED VALUE IF data is changed

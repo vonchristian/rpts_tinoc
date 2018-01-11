@@ -1,2 +1,6 @@
 <%= link_to 'New Sub Classification', new_settings_classification_sub_classification_path(@classification) %>
 <%= link_to 'New Assessment Level', new_settings_classification_assessment_level_path(@classification) %>
+
+<% @classification.sub_classifications.each do |sub_classification| %>
+  <%= link_to sub_classification.name, settings_sub_classification_path(sub_classification) %>
+<% end %>
