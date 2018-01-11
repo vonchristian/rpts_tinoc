@@ -1,0 +1,22 @@
+<div class="row">
+  <div class="col-md-12">
+    <div class="box box-solid">
+      <div class="box-header">
+        <h3 class="box-title"> Real Property Details </h3>
+      </div>
+      <div class="box-body">
+        <ul class="nav nav-tabs navbar-custom">
+          <li class="<%= 'active' if current_page?(real_property_path(@real_property))%>"><%= link_to 'Info', real_property_path(@real_property) %></li>
+          <li class="<%= 'active' if current_page?(real_property_path(@real_property))%>"><%= link_to 'History', real_property_path(@real_property) %></li>
+          <li class="<%= 'active' if current_page?(real_property_path(@real_property))%>"><%= link_to 'Encumberances', real_property_path(@real_property) %></li>
+
+
+          <li class="<%= 'active' if current_page?(real_property_settings_path(@real_property))%>"><%= link_to 'Settings', real_property_settings_path(@real_property) %></li>
+        </ul>
+        <div class="content">
+          <% if current_page? real_property_path(@real_property) %>
+            <%= render 'real_properties/partials/info' %>
+          <% elsif current_page? real_property_settings_path(@real_property) %>
+            <%= render 'real_properties/partials/settings' %>
+          <% end %>
+        </div>

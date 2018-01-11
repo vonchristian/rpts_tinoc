@@ -1,0 +1,80 @@
+<h4>Taxpayers</h4>
+<% @real_property.property_owners.each do |owner| %>
+<%= owner.name %>
+<% end %>
+<%= link_to 'Add Taxpayer', new_real_property_additional_taxpayer_path(@real_property) %>
+<hr />
+<h4>ARP</h4>
+<p>Current ARP: <%= @real_property.current_arp %></p>
+<%= link_to 'New ARP', new_real_property_assessed_real_property_path(@real_property) %>
+<% @real_property.assessed_real_properties.each do |arp| %>
+  <div class="row">
+    <div class="col-md-5">
+      <%= arp.number %>
+    </div>
+    <div class="col-md-3">
+      <%= arp.effectivity_date %>
+    </div>
+  </div>
+  <br>
+<% end %>
+<h4>Boundaries</h4>
+<%= link_to 'North', new_real_property_north_property_boundary_path(@real_property) %>
+<%= @real_property.north_property_boundaries.current.try(:remarks) %>
+<%= link_to 'South', new_real_property_south_property_boundary_path(@real_property) %>
+<%= @real_property.south_property_boundaries.current.try(:remarks) %>
+<hr />
+Market Value <%= @real_property.market_value %>
+
+Adjusted Market Value <%= number_to_currency @real_property.adjusted_market_value %>
+<hr>
+<%= @real_property.subdivided_real_property.try(:description) %>
+<hr>
+<%= @real_property.description %>
+<hr>
+<%= @real_property.current_owner_name %>
+<hr />
+Assessed Value: <%= number_to_currency @real_property.assessed_value %>
+
+
+
+<%= link_to 'New Transfer', new_real_property_transfer_transaction_path(@real_property) %>
+
+
+<%= link_to 'New Subdivision', new_real_property_subdivision_path(@real_property) %>
+
+
+<p>Previous Real Properties</p>
+  <% @real_property.previous_real_properties.each do |real_property| %>
+    <%= link_to real_property.old_real_property.description, real_property_path(real_property.old_real_property) %>
+  <% end %>
+
+<hr>
+<% if @real_property.latest_real_property.present? %>
+  <% @real_property.latest_real_property.previous_real_properties.each do |real_property| %>
+      <%= link_to real_property.old_real_property.description, real_property_path(real_property.old_real_property) %>
+  <% end %>
+  <%= link_to @real_property.latest_real_property.description, real_property_path(@real_property.latest_real_property) %>
+
+<% end %>
+<% @real_property.subdivided_real_properties.each do |real_property| %>
+  <%= link_to real_property.description, real_property_path(real_property) %>
+<% end %>
+
+
+<%= link_to 'New Encumberance', new_real_property_encumberance_path(@real_property) %>
+<% @real_property.encumberances.each do |encumberance| %>
+  <%= encumberance.content %>
+<% end %>
+<hr>
+<p> Buildings </p>
+<%= link_to 'Add Building', new_real_property_building_path(@real_property) %>
+<% @real_property.buildings.each do |building| %>
+  <%= building.kind %>
+  <%= building.structural_type %>
+  <%= building.floors.count %> Floors
+  <% building.floors.each do |floor| %>
+    <%= floor.area %>
+  <% end %>
+<% end %>
+

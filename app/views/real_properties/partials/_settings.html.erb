@@ -1,0 +1,40 @@
+<h4>Classification</h4>
+<%= @real_property.current_classification_name %>
+<%= @real_property.current_classification_assessment_level %>
+<br>
+<br>
+<%= link_to 'Change', new_real_property_classification_path(id: @real_property.id), class: "btn btn-danger" %>
+<hr />
+<h4>Sub Classification</h4>
+  <%= @real_property.current_sub_classification_name %>
+  <%= @real_property.current_sub_classification_current_market_value %>
+<hr>
+<h4>Market Value Adjustments</h4>
+<% @real_property.market_value_adjustments.each do |market_value_adjustment| %>
+  <div class="row">
+    <div class="col-md-5">
+      <%= market_value_adjustment.name %>
+    </div>
+    <div class="col-md-1">
+      <%= market_value_adjustment.percent %>
+    </div>
+    <div class="col-md-3">
+      <span class="pull-right">
+        <%= number_to_currency market_value_adjustment.value_adjustment %>
+      </span>
+    </div>
+  </div>
+  <br>
+<% end %>
+<div class="row">
+  <div class="col-md-5">
+    <b>TOTAL</b>
+  </div>
+  <div class="col-md-1">
+  </div>
+  <div class="col-md-3">
+    <span class="pull-right"><b><%= number_to_currency @real_property.market_value_adjustments.total %></b>
+    </span>
+  </div>
+</div>
+<hr>
