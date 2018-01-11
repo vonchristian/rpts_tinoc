@@ -47,11 +47,15 @@ class RealProperty < ApplicationRecord
     property_owners.map{|a| a.name }.join(",")
   end
 
-  def assessed_value
-    adjusted_market_value * current_classification_assessment_level
+  def assessed_value(options={})
+    if options[:from_date] && options[:to_date]
+     0
+    else
+      adjusted_market_value(options) * current_classification_assessment_level
+    end
   end
 
-  def adjusted_market_value
+  def adjusted_market_value(options={})
     market_value + market_value_adjustments.total
   end
   def market_value

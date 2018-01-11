@@ -38,23 +38,6 @@ ActiveRecord::Schema.define(version: 20180111013655) do
     t.index ["name"], name: "index_adjustment_factors_on_name", unique: true
   end
 
-  create_table "appraisals", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.string "type"
-    t.decimal "unit_value"
-    t.decimal "market_value"
-    t.datetime "date"
-    t.uuid "classification_id"
-    t.uuid "sub_classification_id"
-    t.uuid "real_property_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.decimal "assessed_value"
-    t.index ["classification_id"], name: "index_appraisals_on_classification_id"
-    t.index ["real_property_id"], name: "index_appraisals_on_real_property_id"
-    t.index ["sub_classification_id"], name: "index_appraisals_on_sub_classification_id"
-    t.index ["type"], name: "index_appraisals_on_type"
-  end
-
   create_table "assessed_real_properties", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "real_property_id"
     t.string "number"
@@ -158,16 +141,6 @@ ActiveRecord::Schema.define(version: 20180111013655) do
     t.datetime "updated_at", null: false
     t.index ["adjustment_factor_id"], name: "index_market_value_adjustments_on_adjustment_factor_id"
     t.index ["real_property_id"], name: "index_market_value_adjustments_on_real_property_id"
-  end
-
-  create_table "market_value_revisions", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.uuid "sub_classification_id"
-    t.decimal "market_value"
-    t.string "unit"
-    t.date "effectivity_date"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["sub_classification_id"], name: "index_market_value_revisions_on_sub_classification_id"
   end
 
   create_table "market_values", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -287,14 +260,6 @@ ActiveRecord::Schema.define(version: 20180111013655) do
     t.index ["sub_classification_id"], name: "index_sub_classification_on_real_property_sub_classifications"
   end
 
-  create_table "revisions", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.datetime "date"
-    t.uuid "real_property_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["real_property_id"], name: "index_revisions_on_real_property_id"
-  end
-
   create_table "streets", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "barangay_id"
     t.string "name"
@@ -348,9 +313,6 @@ ActiveRecord::Schema.define(version: 20180111013655) do
   add_foreign_key "addresses", "barangays"
   add_foreign_key "addresses", "municipalities"
   add_foreign_key "addresses", "streets"
-  add_foreign_key "appraisals", "classifications"
-  add_foreign_key "appraisals", "real_properties"
-  add_foreign_key "appraisals", "sub_classifications"
   add_foreign_key "assessed_real_properties", "real_properties"
   add_foreign_key "assessment_levels", "classifications"
   add_foreign_key "barangays", "municipalities"
@@ -366,7 +328,6 @@ ActiveRecord::Schema.define(version: 20180111013655) do
   add_foreign_key "locations", "streets"
   add_foreign_key "market_value_adjustments", "adjustment_factors"
   add_foreign_key "market_value_adjustments", "real_properties"
-  add_foreign_key "market_value_revisions", "sub_classifications"
   add_foreign_key "market_values", "sub_classifications"
   add_foreign_key "municipalities", "provinces"
   add_foreign_key "previous_real_properties", "real_properties", column: "latest_real_property_id"
@@ -383,7 +344,6 @@ ActiveRecord::Schema.define(version: 20180111013655) do
   add_foreign_key "real_property_ownerships", "real_properties"
   add_foreign_key "real_property_sub_classifications", "real_properties"
   add_foreign_key "real_property_sub_classifications", "sub_classifications"
-  add_foreign_key "revisions", "real_properties"
   add_foreign_key "streets", "barangays"
   add_foreign_key "sub_classifications", "classifications"
   add_foreign_key "transfer_transactions", "real_properties", column: "new_real_property_id"
