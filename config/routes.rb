@@ -4,7 +4,6 @@ Rails.application.routes.draw do
     resources :south_property_boundaries, only: [:new, :create], module: :real_properties
     resources :additional_taxpayers, only: [:new, :create], module: :real_properties
     resources :subdivisions, only: [:new, :create], module: :real_properties
-    resources :revisions, only: [:new, :create], module: :real_properties
     resources :assessed_real_properties, only: [:new, :create], module: :real_properties
     resources :transfer_transactions, only: [:new, :create], module: :real_properties
     resources :north_property_boundaries
@@ -29,6 +28,7 @@ Rails.application.routes.draw do
   namespace :settings do
     resources :classifications, only: [:show, :new, :create] do
       resources :sub_classifications, only: [:new, :create]
+      resources :assessment_levels, only: [:new, :create], module: :classifications
     end
   end
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html

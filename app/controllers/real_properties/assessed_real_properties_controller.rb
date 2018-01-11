@@ -17,7 +17,7 @@ module RealProperties
 
     private
     def assessed_real_property_params
-      params.require(:assessed_real_property).permit(:number)
+      params.require(:assessed_real_property).permit(:number, :effectivity_date)
     end
   end
 end

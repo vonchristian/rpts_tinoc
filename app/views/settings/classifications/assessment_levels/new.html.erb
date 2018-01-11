@@ -1,0 +1,6 @@
+<%= simple_form_for [@classification, @assessment_level], url: :settings_classification_assessment_levels do |f| %>
+  <%= f.error_notification %>
+  <%= f.input :percent %>
+  <%= f.input :effectivity_date, input_html: { class: "datepicker" } %>
+  <%= f.submit "Save Assessment Level" %>
+<% end %>

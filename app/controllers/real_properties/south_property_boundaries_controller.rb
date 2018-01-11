@@ -17,7 +17,7 @@ module RealProperties
 
     private
     def boundary_params
-      params.require(:boundaries_south_property_boundary).permit(:remarks)
+      params.require(:real_properties_boundaries_south_property_boundary).permit(:remarks)
     end
   end
 end

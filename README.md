@@ -40,3 +40,5 @@ P 165, 000.00 per municipality
 _______________________-______
 
 prepare proposal and demo on January 15
+
+create settings page

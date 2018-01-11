@@ -5,21 +5,63 @@
         <h3 class="box-title"> Real Property Details </h3>
       </div>
       <div class="box-body">
-        <ul class="nav nav-tabs">
-          <li class="<%= 'active' if current_page?(real_property_path(@real_property))%>"><%= link_to 'Info', real_property_path(@real_property) %></li>
-          <li class="<%= 'active' if current_page?(real_property_path(@real_property))%>"><%= link_to '', real_property_path(@real_property) %></li>
-
-        </ul>
-      </div>
-
-Market Value <%= @real_property.market_value %>
-Market Value Adjustments
-<% @real_property.market_value_adjustments.each do |market_value_adjustment| %>
-  <%= market_value_adjustment.name %>
-  <%= market_value_adjustment.percent %>
-  <%= market_value_adjustment.value_adjustment %>
+        <div class="row">
+          <div class="col-md-10 col-md-offset-1">
+<h4>Taxpayers</h4>
+<% @real_property.property_owners.each do |owner| %>
+<%= owner.name %>
 <% end %>
-Total <%= @real_property.market_value_adjustments.total %>
+<%= link_to 'Add Taxpayer', new_real_property_additional_taxpayer_path(@real_property) %>
+<hr />
+<h4>ARP</h4>
+<p>Current ARP: <%= @real_property.current_arp %></p>
+<%= link_to 'New ARP', new_real_property_assessed_real_property_path(@real_property) %>
+<% @real_property.assessed_real_properties.each do |arp| %>
+  <div class="row">
+    <div class="col-md-5">
+      <%= arp.number %>
+    </div>
+    <div class="col-md-3">
+      <%= arp.effectivity_date %>
+    </div>
+  </div>
+  <br>
+<% end %>
+<h4>Boundaries</h4>
+<%= link_to 'North', new_real_property_north_property_boundary_path(@real_property) %>
+<%= @real_property.north_property_boundaries.current.try(:remarks) %>
+<%= link_to 'South', new_real_property_south_property_boundary_path(@real_property) %>
+<%= @real_property.south_property_boundaries.current.try(:remarks) %>
+<hr />
+Market Value <%= @real_property.market_value %>
+<h4>Market Value Adjustments</h4>
+<% @real_property.market_value_adjustments.each do |market_value_adjustment| %>
+  <div class="row">
+    <div class="col-md-5">
+      <%= market_value_adjustment.name %>
+    </div>
+    <div class="col-md-1">
+      <%= market_value_adjustment.percent %>
+    </div>
+    <div class="col-md-3">
+      <span class="pull-right">
+        <%= number_to_currency market_value_adjustment.value_adjustment %>
+      </span>
+    </div>
+  </div>
+  <br>
+<% end %>
+<div class="row">
+  <div class="col-md-5">
+    <b>TOTAL</b>
+  </div>
+  <div class="col-md-1">
+  </div>
+  <div class="col-md-3">
+    <span class="pull-right"><b><%= number_to_currency @real_property.market_value_adjustments.total %></b>
+    </span>
+  </div>
+</div>
 Adjusted Market Value <%= number_to_currency @real_property.adjusted_market_value %>
 <hr>
 <%= @real_property.subdivided_real_property.try(:description) %>
@@ -29,23 +71,14 @@ Adjusted Market Value <%= number_to_currency @real_property.adjusted_market_valu
 <%= @real_property.current_owner_name %>
 <hr />
 Assessed Value: <%= number_to_currency @real_property.assessed_value %>
-<%= link_to 'New Revision', new_real_property_revision_path(@real_property) %>
-
-<p>Revisions</p>
-<% @real_property.revisions.each do |revision| %>
-  <%= revision.date %>
-<% end %>
 
 
-<%= link_to 'New ARP', new_real_property_assessed_real_property_path(@real_property) %>
-<% @real_property.assessed_real_properties.each do |arp| %>
-  <%= arp.number %>
-<% end %>
+
 <%= link_to 'New Transfer', new_real_property_transfer_transaction_path(@real_property) %>
 
 
 <%= link_to 'New Subdivision', new_real_property_subdivision_path(@real_property) %>
-<%= link_to 'Add Owner', new_real_property_additional_taxpayer_path(@real_property) %>
+
 
 <p>Previous Real Properties</p>
   <% @real_property.previous_real_properties.each do |real_property| %>
@@ -63,12 +96,6 @@ Assessed Value: <%= number_to_currency @real_property.assessed_value %>
 <% @real_property.subdivided_real_properties.each do |real_property| %>
   <%= link_to real_property.description, real_property_path(real_property) %>
 <% end %>
-
-<p>Boundaries</p>
-<%= link_to 'North', new_real_property_north_property_boundary_path(@real_property) %>
-<%= @real_property.north_property_boundaries.current.try(:remarks) %>
-<%= link_to 'South', new_real_property_south_property_boundary_path(@real_property) %>
-<%= @real_property.south_property_boundaries.current.try(:remarks) %>
 
 
 <%= link_to 'New Encumberance', new_real_property_encumberance_path(@real_property) %>
