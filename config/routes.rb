@@ -1,5 +1,7 @@
 Rails.application.routes.draw do
   resources :real_properties, only: [:index, :show] do
+    resources :classifications, only: [:new, :create], module: :real_properties
+    resources :settings, only: [:index], module: :real_properties
     resources :north_property_boundaries, only: [:new, :create], module: :real_properties
     resources :south_property_boundaries, only: [:new, :create], module: :real_properties
     resources :additional_taxpayers, only: [:new, :create], module: :real_properties
@@ -7,7 +9,7 @@ Rails.application.routes.draw do
     resources :assessed_real_properties, only: [:new, :create], module: :real_properties
     resources :transfer_transactions, only: [:new, :create], module: :real_properties
     resources :north_property_boundaries
-    resources :encumberances, only: [:new, :create], module: :real_properties
+  resources :encumberances, only: [:new, :create], module: :real_properties
     resources :buildings, only: [:new, :create], module: :real_properties
   end
 

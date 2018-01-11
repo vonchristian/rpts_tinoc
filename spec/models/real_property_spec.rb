@@ -3,9 +3,8 @@ require 'rails_helper'
 describe RealProperty do
   describe 'associations' do
     it { is_expected.to have_one :location }
-    it { is_expected.to have_many :taxpayer_property_owners }
+    it { is_expected.to have_many :property_owners }
     it { is_expected.to have_many :real_property_ownerships }
-    it { is_expected.to have_many :revisions }
     it { is_expected.to have_many :assessed_real_properties }
     it { is_expected.to have_one :transfer_transaction }
     it { is_expected.to have_many :property_boundaries }
@@ -18,6 +17,7 @@ describe RealProperty do
     it { is_expected.to have_many :east_property_boundaries }
     it { is_expected.to have_many :west_property_boundaries }
   end
+
    describe 'enums' do
     it { is_expected.to define_enum_for(:taxability).with([:taxable, :exempted]) }
   end
@@ -31,7 +31,7 @@ describe RealProperty do
     first_arp = create(:assessed_real_property, real_property: real_property)
     second_arp = create(:assessed_real_property, real_property: real_property)
 
-    expect(real_property.current_arp.id).to eql(second_arp.id)
+    expect(real_property.current_arp).to eql(second_arp.number)
   end
 
 end

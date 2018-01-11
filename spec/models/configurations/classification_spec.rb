@@ -1,9 +1,5 @@
 require 'rails_helper'
 
-module Configurations
-  describe Classification do
-    describe 'associations' do
-      it { is_expected.to have_many :sub_classifications }
-    end
-  end
+RSpec.describe Classification, type: :model do
+  pending "add some examples to (or delete) #{__FILE__}"
 end

@@ -20,7 +20,7 @@
                 <tr>
                   <td><%= real_property.taxpayers_name %></td>
                   <td> <%= link_to real_property.description, real_property_url(real_property) %></td>
-                  <td><%= real_property.type%></td>
+                  <td><%= real_property.type.to_s.gsub("RealProperties::PropertyTypes::", "")%></td>
                   <td><%= real_property.current_arp %></td>
                 </tr>
               <% end %>
