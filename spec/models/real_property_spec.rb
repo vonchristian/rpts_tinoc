@@ -8,7 +8,6 @@ describe RealProperty do
     it { is_expected.to have_many :revisions }
     it { is_expected.to have_many :assessed_real_properties }
     it { is_expected.to have_one :transfer_transaction }
-    it { is_expected.to have_many :appraisals }
     it { is_expected.to have_many :property_boundaries }
     it { is_expected.to have_many :north_property_boundaries }
     it { is_expected.to have_many :south_property_boundaries }
