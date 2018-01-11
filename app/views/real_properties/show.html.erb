@@ -1,3 +1,17 @@
+<div class="row">
+  <div class="col-md-12">
+    <div class="box box-solid">
+      <div class="box-header">
+        <h3 class="box-title"> Real Property Details </h3>
+      </div>
+      <div class="box-body">
+        <ul class="nav nav-tabs">
+          <li class="<%= 'active' if current_page?(real_property_path(@real_property))%>"><%= link_to 'Info', real_property_path(@real_property) %></li>
+          <li class="<%= 'active' if current_page?(real_property_path(@real_property))%>"><%= link_to '', real_property_path(@real_property) %></li>
+
+        </ul>
+      </div>
+
 Market Value <%= @real_property.market_value %>
 Market Value Adjustments
 <% @real_property.market_value_adjustments.each do |market_value_adjustment| %>
@@ -48,15 +62,6 @@ Assessed Value: <%= number_to_currency @real_property.assessed_value %>
 <% end %>
 <% @real_property.subdivided_real_properties.each do |real_property| %>
   <%= link_to real_property.description, real_property_path(real_property) %>
-<% end %>
-<p>Appraisals</p>
-<%= link_to 'New Appraisal', new_real_property_appraisal_path(@real_property) %>
-<% @real_property.appraisals.each do |appraisal| %>
-  <%= appraisal.classification_name %>
-  <%= appraisal.sub_classification_name %>
-  <%= number_to_currency appraisal.unit_value %>
-  <%= number_to_currency appraisal.market_value %>
-  <%= number_to_currency appraisal.assessed_value %>
 <% end %>
 
 <p>Boundaries</p>

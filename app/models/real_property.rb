@@ -18,7 +18,6 @@ class RealProperty < ApplicationRecord
   has_many :assessed_real_properties
   has_many :previous_real_properties, foreign_key: 'latest_real_property_id', class_name: "PreviousRealProperty"
 
-  has_many :appraisals
   has_many :property_boundaries
   ##Boundaries
   has_many :north_property_boundaries, class_name: "RealProperties::Boundaries::NorthPropertyBoundary"
@@ -34,7 +33,7 @@ class RealProperty < ApplicationRecord
   delegate :market_value, to: :sub_classification, prefix: true
   delegate :assessment_level, to: :classification, prefix: true
   def taxpayers_name
-    property_owners.map{|a| a.name }.join(" ")
+    property_owners.map{|a| a.name }.join(",")
   end
 
   def assessed_value
@@ -61,7 +60,7 @@ class RealProperty < ApplicationRecord
     end
   end
   def current_arp
-    assessed_real_properties.order(created_at: :asc).last
+    assessed_real_properties.order(created_at: :asc).last.try(:number)
   end
   def previous_arps
     if transfer_transaction

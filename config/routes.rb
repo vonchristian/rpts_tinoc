@@ -2,7 +2,6 @@ Rails.application.routes.draw do
   resources :real_properties, only: [:index, :show] do
     resources :north_property_boundaries, only: [:new, :create], module: :real_properties
     resources :south_property_boundaries, only: [:new, :create], module: :real_properties
-    resources :appraisals, only: [:new, :create], module: :real_properties
     resources :additional_taxpayers, only: [:new, :create], module: :real_properties
     resources :subdivisions, only: [:new, :create], module: :real_properties
     resources :revisions, only: [:new, :create], module: :real_properties
