@@ -25,7 +25,7 @@
 <%= @real_property.south_property_boundaries.current.try(:remarks) %>
 <hr />
 Market Value <%= @real_property.market_value %>
-Market Value <%= @real_property.market_value(from_date: Date.today, to_date: Date.today) %>
+
 
 Adjusted Market Value <%= number_to_currency @real_property.adjusted_market_value %>
 <hr>

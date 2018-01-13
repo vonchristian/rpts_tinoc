@@ -16,6 +16,7 @@ describe RealProperty do
     it { is_expected.to have_many :south_property_boundaries }
     it { is_expected.to have_many :east_property_boundaries }
     it { is_expected.to have_many :west_property_boundaries }
+    it { is_expected.to have_many :assessed_values }
   end
 
    describe 'enums' do

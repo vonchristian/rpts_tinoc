@@ -5,7 +5,6 @@ git_source(:github) do |repo_name|
   "https://github.com/#{repo_name}.git"
 end
 gem 'bootsnap', require: false
-gem 'ipfs'
 gem 'trix'
 gem 'autonumeric-rails'
 gem 'rails', '~> 5.1.4'

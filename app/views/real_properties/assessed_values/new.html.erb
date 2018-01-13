@@ -1,0 +1,7 @@
+<%= simple_form_for [@real_property, @assessed_value], url: :real_property_assessed_values do |f| %>
+  <%= f.error_notification %>
+  <%= f.input :effectivity_date, input_html: { class: "datepicker" } %>
+  <%= f.input :assessed_value %>
+  <%= f.input :assessed_real_property_id, label: "Superseded Assessment:", collection: @real_property.assessed_real_properties.all.map{|a| [a.number, a.id] } %>
+  <%= f.submit "Save" %>
+<% end %>

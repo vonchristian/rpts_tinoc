@@ -32,7 +32,7 @@ class RealProperty < ApplicationRecord
 
   has_many :real_property_sub_classifications, class_name: "RealProperties::RealPropertySubClassification"
   has_many :sub_classifications, through: :real_property_sub_classifications, class_name: "Configurations::SubClassification"
-
+  has_many :assessed_values, class_name: "RealProperties::AssessedValue"
   delegate :name, to: :current_owner, prefix: true, allow_nil: true
   delegate :current_market_value, :name, to: :current_sub_classification, prefix: true, allow_nil: true
   delegate :assessment_level, :name, to: :current_classification, prefix: true, allow_nil: true
@@ -47,20 +47,23 @@ class RealProperty < ApplicationRecord
   def taxpayers_name
     property_owners.map{|a| a.name }.join(",")
   end
-
-  def assessed_value(options={})
-    adjusted_market_value(options) * current_classification_assessment_level
+  def assessed_value
+    assessed_values.current
   end
 
-  def adjusted_market_value(options={})
-    market_value(options) + market_value_adjustments.total(options)
-  end
-  def market_value(options={})
-    current_area(options) * current_sub_classification_current_market_value
+  def temp_assessed_value
+    adjusted_market_value * current_classification_assessment_level
   end
 
-  def current_area(options={})
-    real_property_areas.current(options)
+  def adjusted_market_value
+    market_value + market_value_adjustments.total
+  end
+  def market_value
+    current_area * current_sub_classification_current_market_value
+  end
+
+  def current_area
+    real_property_areas.current
   end
 
   def self.types

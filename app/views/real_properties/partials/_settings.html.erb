@@ -1,3 +1,11 @@
+<h4>Assessed Values</h4>
+<%= link_to 'New Assessed Value', new_real_property_assessed_value_path(@real_property) %>
+  <% @real_property.assessed_values.each do |assessed_value| %>
+    <%= assessed_value.assessed_value %>
+    <%= assessed_value.effectivity_date %>
+    <%= assessed_value.assessed_real_property.try(:number) %>
+  <% end %>
+<hr>
 <h4>Classification</h4>
 <%= @real_property.current_classification_name %>
 <%= @real_property.current_classification_assessment_level %>
