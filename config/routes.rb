@@ -1,5 +1,7 @@
 Rails.application.routes.draw do
   resources :real_properties, only: [:index, :show] do
+    resources :field_appraisal_and_assessments, only: [:index], module: :real_properties
+    resources :reports, only: [:index], module: :real_properties
     resources :assessed_values, only: [:new, :create], module: :real_properties
     resources :revisions, only: [:index], module: :real_properties
     resources :market_value_adjustments, only: [:new, :create], module: :real_properties

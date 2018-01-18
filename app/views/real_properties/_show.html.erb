@@ -4,14 +4,16 @@
       <div class="box-header">
         <h3 class="box-title"> Real Property Details </h3>
       </div>
-      <div class="box-body">
-        <ul class="nav nav-tabs navbar-custom">
+      <div class="nav-tabs-navigation">
+        <ul id="tabs" class="nav nav-tabs" data-tabs="tabs">
           <li class="<%= 'active' if current_page?(real_property_path(@real_property))%>"><%= link_to 'Info', real_property_path(@real_property) %></li>
           <li class="<%= 'active' if current_page?(real_property_path(@real_property))%>"><%= link_to 'History', real_property_path(@real_property) %></li>
           <li class="<%= 'active' if current_page?(real_property_path(@real_property))%>"><%= link_to 'Encumberances', real_property_path(@real_property) %></li>
            <li class="<%= 'active' if current_page?(real_property_revisions_path(@real_property))%>"><%= link_to 'Revisions', real_property_revisions_path(@real_property) %></li>
 
           <li class="<%= 'active' if current_page?(real_property_settings_path(@real_property))%>"><%= link_to 'Settings', real_property_settings_path(@real_property) %></li>
+          <li class="<%= 'active' if current_page?(real_property_reports_path(@real_property))%>"><%= link_to 'Reports', real_property_reports_path(@real_property) %></li>
+
         </ul>
         <div class="content">
           <% if current_page? real_property_path(@real_property) %>
@@ -20,6 +22,7 @@
             <%= render 'real_properties/partials/settings' %>
           <% elsif current_page? real_property_revisions_path(@real_property) %>
             <%= render 'real_properties/partials/revisions' %>
-
+          <% elsif current_page? real_property_reports_path(@real_property) %>
+            <%= render 'real_properties/partials/reports' %>
           <% end %>
         </div>

@@ -1,3 +1,6 @@
+Use postgis for mapping
+add active_record_postgres_adapter
+learn UTM
 15,000/month
 
 # README

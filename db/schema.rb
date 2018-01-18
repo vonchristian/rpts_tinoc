@@ -10,11 +10,30 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180113083638) do
+ActiveRecord::Schema.define(version: 20180113085613) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
   enable_extension "pgcrypto"
+
+  create_table "accounts", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "name"
+    t.string "type"
+    t.boolean "contra", default: false
+    t.string "account_code"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["account_code"], name: "index_accounts_on_account_code", unique: true
+    t.index ["name"], name: "index_accounts_on_name", unique: true
+    t.index ["type"], name: "index_accounts_on_type"
+  end
+
+  create_table "accounts_receivable_configs", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "accounts_receivable_account_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["accounts_receivable_account_id"], name: "index_ar_account_on_ar_config"
+  end
 
   create_table "addresses", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "addressable_type"
@@ -38,6 +57,20 @@ ActiveRecord::Schema.define(version: 20180113083638) do
     t.index ["name"], name: "index_adjustment_factors_on_name", unique: true
   end
 
+  create_table "amounts", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "entry_id"
+    t.string "type"
+    t.uuid "account_id"
+    t.decimal "amount"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["account_id", "entry_id"], name: "index_amounts_on_account_id_and_entry_id"
+    t.index ["account_id"], name: "index_amounts_on_account_id"
+    t.index ["entry_id", "account_id"], name: "index_amounts_on_entry_id_and_account_id"
+    t.index ["entry_id"], name: "index_amounts_on_entry_id"
+    t.index ["type"], name: "index_amounts_on_type"
+  end
+
   create_table "assessed_real_properties", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "real_property_id"
     t.string "number"
@@ -58,6 +91,7 @@ ActiveRecord::Schema.define(version: 20180113083638) do
     t.uuid "assessed_real_property_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.boolean "cancelled", default: false
     t.index ["assessed_real_property_id"], name: "index_assessed_values_on_assessed_real_property_id"
     t.index ["real_property_id"], name: "index_assessed_values_on_real_property_id"
   end
@@ -124,6 +158,17 @@ ActiveRecord::Schema.define(version: 20180113083638) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["real_property_id"], name: "index_encumberances_on_real_property_id"
+  end
+
+  create_table "entries", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "commercial_document_type"
+    t.uuid "commercial_document_id"
+    t.datetime "date"
+    t.string "description"
+    t.string "reference_number"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["commercial_document_type", "commercial_document_id"], name: "index_commercial_document_on_entries"
   end
 
   create_table "floors", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -343,9 +388,12 @@ ActiveRecord::Schema.define(version: 20180113083638) do
     t.index ["old_real_property_id"], name: "index_transfer_transactions_on_old_real_property_id"
   end
 
+  add_foreign_key "accounts_receivable_configs", "accounts", column: "accounts_receivable_account_id"
   add_foreign_key "addresses", "barangays"
   add_foreign_key "addresses", "municipalities"
   add_foreign_key "addresses", "streets"
+  add_foreign_key "amounts", "accounts"
+  add_foreign_key "amounts", "entries"
   add_foreign_key "assessed_real_properties", "assessed_values"
   add_foreign_key "assessed_real_properties", "real_properties"
   add_foreign_key "assessed_values", "assessed_real_properties"
