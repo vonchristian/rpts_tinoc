@@ -1,4 +1,5 @@
 class RealProperty < ApplicationRecord
+  include PublicActivity::Common
   enum taxability: [:taxable, :exempted]
   belongs_to :subdivided_real_property, class_name: "RealProperty", foreign_key: 'subdivided_real_property_id'
   has_one :location
