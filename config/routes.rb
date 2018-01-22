@@ -40,7 +40,7 @@ Rails.application.routes.draw do
       resources :assessment_levels, only: [:new, :create], module: :classifications
     end
     resources :sub_classifications, only: [:show] do
-      resources :market_values, only: [:new, :create]
+      resources :market_value_schedules, only: [:new, :create]
     end
   end
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html

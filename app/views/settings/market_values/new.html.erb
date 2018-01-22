@@ -1,6 +1,0 @@
-<%= simple_form_for [@sub_classification, @market_value], url: :settings_sub_classification_market_values do |f| %>
-  <%= f.input :market_value %>
-  <%= f.input :unit %>
-  <%= f.input :effectivity_date, input_html: { class: "datepicker" } %>
-  <%= f.submit "Create Market Value" %>
-<% end %>

@@ -1,11 +1,12 @@
 
-<%= simple_form_for [@real_property, @transfer], url: :real_property_transfer_transactions do |f| %>
-  <%= f.input :new_owner_id, collection: Taxpayer.all.map{ |a| [a.first_name, a.id] } %>
-  <%= f.input :old_real_property_id, input_html: { value: @real_property.id } %>
+<%= simple_form_for  @transfer, url: :real_property_transfer_transactions do |f| %>
+  <%= f.input :grantor_id, collection: @real_property.property_owners.all.map{ |a| [a.first_name, a.id] } %>
+  <%= f.input :grantee_id, collection: Taxpayer.all.map{ |a| [a.first_name, a.id] } %>
+
+
 
   <%= f.input :date_transferred %>
-  <%= f.simple_fields_for :new_real_property do |r| %>
-    <%= r.input :description %>
-  <% end %>
+  <%= f.input :remarks %>
+  <%= f.input :transferred_real_property_id, input_html: { value: @real_property.id } %>
   <%= f.submit "Save Transfer" %>
 <% end %>

@@ -9,8 +9,8 @@ class RealProperty < ApplicationRecord
   has_many :property_owners, through: :real_property_ownerships, source: :property_owner, source_type: 'Taxpayer'
 
   ##Transactions
-  has_one :transfer_transaction, foreign_key: 'old_real_property_id', class_name: "Transactions::TransferTransaction"
-  has_one :previous_transferred_real_property, foreign_key: 'new_real_property', class_name: "Transactions::TransferTransaction"
+  has_many :transfer_transactions, foreign_key: 'transferred_real_property_id', class_name: "Transactions::TransferTransaction"
+
   has_many :real_property_consolidations, class_name: "RealProperties::RealPropertyConsolidation"
   has_many :subdivided_real_properties, class_name: 'RealProperty', foreign_key: 'subdivided_real_property_id'
 
@@ -37,7 +37,13 @@ class RealProperty < ApplicationRecord
   delegate :name, to: :current_owner, prefix: true, allow_nil: true
   delegate :current_market_value, :name, to: :current_sub_classification, prefix: true, allow_nil: true
   delegate :assessment_level, :name, to: :current_classification, prefix: true, allow_nil: true
-
+  def current_owners_name
+    if transfer_transaction.present?
+      transfer_transaction.grantee
+    else
+      property_owners
+    end
+  end
   def current_classification
     real_property_classifications.current
   end
