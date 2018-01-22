@@ -29,10 +29,8 @@ Rails.application.routes.draw do
 
   resources :taxpayers, only: [:index, :new, :create, :show] do
     resources :real_properties, only: [:new, :create], module: :taxpayers
-    resources :consolidated_real_properties, only: [:new, :create], module: :taxpayers
-  end
-  resources :consolidations, only: [:show] do
-    resources :real_property_consolidations, only: [:new, :create]
+    resources :real_property_consolidations, only: [:new, :create], module: :taxpayers
+    resources :consolidation_transactions, only: [:new, :create], module: :taxpayers
   end
   resources :settings, only: [:index]
   namespace :settings do

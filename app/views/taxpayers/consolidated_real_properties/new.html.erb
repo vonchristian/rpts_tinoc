@@ -1,6 +1,0 @@
-<%= simple_form_for [@taxpayer, @consolidation], url: :taxpayer_consolidated_real_properties do |f| %>
-  <%= f.simple_fields_for :real_property do |r| %>
-    <%= r.input :description %>
-  <% end %>
-  <%= f.submit %>
-<% end %>

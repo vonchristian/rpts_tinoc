@@ -1,0 +1,19 @@
+<%= @taxpayer.inspect %>
+<div class="row">
+  <div class="col-md-5">
+    <%= simple_form_for [@taxpayer, @consolidation_transaction], url: :taxpayer_consolidation_transactions do |f| %>
+       <%= f.input :consolidated_real_property_id, collection: RealProperty.all.map{|a| [a.current_arp, a.id ] } %>
+       <%= f.input :consolidator_id, input_html: { value: @taxpayer.id } %>
+       <%= f.input :consolidator_type, input_html: { value: @taxpayer.class } %>
+
+      <%= f.submit %>
+    <% end %>
+  </div>
+  <div class="col-md-7">
+    <% @taxpayer.consolidation_transactions.each do |transaction| %>
+      <%= transaction.inspect %>
+      <hr>
+    <% end %>
+    <%= link_to 'Proceed', new_taxpayer_real_property_consolidation_path(@taxpayer), class: "btn btn-primary" %>
+  </div>
+</div>

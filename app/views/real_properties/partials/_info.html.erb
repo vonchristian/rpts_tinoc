@@ -1,8 +1,10 @@
-<h4>Previous Real Property Info</h4>
-<%= @real_property.subdivided_real_property.present? %>
-  <% if @real_property.subdivided_real_property.present? %>
-  <%= @real_property.subdivided_real_property.area %>
+<h4>Consolidated Real Properties</h4>
+  <% @real_property.consolidated_real_properties.each do |real_property| %>
+    <%= real_property.description %>
   <% end %>
+  <hr />
+<h4>Previous Real Property Info</h4>
+
 <hr>
 <h4>Taxpayers</h4>
 <% if @real_property.transfer_transactions.present? %>
@@ -42,7 +44,7 @@ Market Value <%= @real_property.market_value.to_f.to_words.titleize %>
 
 Adjusted Market Value <%= number_to_currency @real_property.adjusted_market_value %>
 <hr>
-<%= @real_property.subdivided_real_property.try(:description) %>
+
 <hr>
 <%= @real_property.description %>
 <hr>

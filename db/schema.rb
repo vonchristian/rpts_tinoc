@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_01_22_060233) do
+ActiveRecord::Schema.define(version: 2018_01_22_102751) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -161,12 +161,15 @@ ActiveRecord::Schema.define(version: 2018_01_22_060233) do
   end
 
   create_table "consolidations", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.uuid "consolidator_id"
     t.uuid "real_property_id"
     t.datetime "date"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["consolidator_id"], name: "index_consolidations_on_consolidator_id"
+    t.string "consolidator_type"
+    t.uuid "consolidator_id"
+    t.uuid "consolidated_real_property_id"
+    t.index ["consolidated_real_property_id"], name: "index_consolidations_on_consolidated_real_property_id"
+    t.index ["consolidator_type", "consolidator_id"], name: "index_consolidations_on_consolidator_type_and_consolidator_id"
     t.index ["real_property_id"], name: "index_consolidations_on_real_property_id"
   end
 
@@ -300,6 +303,8 @@ ActiveRecord::Schema.define(version: 2018_01_22_060233) do
     t.string "description"
     t.integer "taxability"
     t.uuid "land_reference_id"
+    t.uuid "consolidated_real_property_id"
+    t.index ["consolidated_real_property_id"], name: "index_real_properties_on_consolidated_real_property_id"
     t.index ["land_reference_id"], name: "index_real_properties_on_land_reference_id"
     t.index ["taxability"], name: "index_real_properties_on_taxability"
     t.index ["type"], name: "index_real_properties_on_type"
@@ -484,7 +489,7 @@ ActiveRecord::Schema.define(version: 2018_01_22_060233) do
   add_foreign_key "building_descriptions", "real_properties", column: "building_id"
   add_foreign_key "cancellations", "real_properties"
   add_foreign_key "consolidations", "real_properties"
-  add_foreign_key "consolidations", "taxpayers", column: "consolidator_id"
+  add_foreign_key "consolidations", "real_properties", column: "consolidated_real_property_id"
   add_foreign_key "encumberances", "real_properties"
   add_foreign_key "floors", "real_properties", column: "building_id"
   add_foreign_key "locations", "barangays"
@@ -501,6 +506,7 @@ ActiveRecord::Schema.define(version: 2018_01_22_060233) do
   add_foreign_key "previous_real_properties", "real_properties", column: "old_real_property_id"
   add_foreign_key "property_administrations", "real_properties"
   add_foreign_key "property_boundaries", "real_properties"
+  add_foreign_key "real_properties", "real_properties", column: "consolidated_real_property_id"
   add_foreign_key "real_properties", "real_properties", column: "land_reference_id"
   add_foreign_key "real_property_areas", "real_properties"
   add_foreign_key "real_property_classifications", "classifications"

@@ -1,0 +1,11 @@
+<%= @taxpayer.inspect %>
+<%= simple_form_for @real_property_consolidation, url: :taxpayer_real_property_consolidations do |f| %>
+  <%= f.error_notification %>
+  <%= f.input :area %>
+  <%= f.input :sub_classification_id, collection: Configurations::SubClassification.all.map{|a| [a.name, a.id] } %>
+  <%= f.input :classification_id, collection: Configurations::Classification.all.map{|a| [a.name, a.id] } %>
+  <%= f.input :consolidator_id, input_html: { value: @taxpayer.id } %>
+  <%= f.input :consolidator_type, input_html: { value: @taxpayer.class } %>
+
+  <%= f.submit "Save" %>
+<% end %>
