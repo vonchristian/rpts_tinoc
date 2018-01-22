@@ -1,3 +1,9 @@
+<h4>Previous Real Property Info</h4>
+<%= @real_property.subdivided_real_property.present? %>
+  <% if @real_property.subdivided_real_property.present? %>
+  <%= @real_property.subdivided_real_property.area %>
+  <% end %>
+<hr>
 <h4>Taxpayers</h4>
 <% if @real_property.transfer_transactions.present? %>
   <%= @real_property.transfer_transactions.order(created_at: :asc).last.grantee.name %>

@@ -1,7 +1,8 @@
 class RealProperty < ApplicationRecord
   include PublicActivity::Common
   enum taxability: [:taxable, :exempted]
-  belongs_to :subdivided_real_property, class_name: "RealProperty", foreign_key: 'subdivided_real_property_id'
+  has_one :subdivision_transaction, class_name: "Transactions::Subdivision", foreign_key: 'real_property_id'
+
   has_one :location
   has_many :real_property_areas, class_name: "RealProperties::RealPropertyArea"
   has_many :market_value_adjustments, class_name: "RealProperties::MarketValueAdjustment"
@@ -39,6 +40,7 @@ class RealProperty < ApplicationRecord
   delegate :name, to: :current_owner, prefix: true, allow_nil: true
   delegate :current_market_value, :name, to: :current_sub_classification, prefix: true, allow_nil: true
   delegate :assessment_level, :name, to: :current_classification, prefix: true, allow_nil: true
+  delegate :divided_real_property, to: :subdivision_transaction, allow_nil: true
   def current_owners_name
     if transfer_transaction.present?
       transfer_transaction.grantee
