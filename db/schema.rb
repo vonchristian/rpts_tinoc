@@ -10,11 +10,11 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180113085613) do
+ActiveRecord::Schema.define(version: 2018_01_22_024113) do
 
   # These are extensions that must be enabled in order to support this database
-  enable_extension "plpgsql"
   enable_extension "pgcrypto"
+  enable_extension "plpgsql"
 
   create_table "accounts", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "name"
@@ -201,6 +201,18 @@ ActiveRecord::Schema.define(version: 20180113085613) do
     t.index ["real_property_id"], name: "index_market_value_adjustments_on_real_property_id"
   end
 
+  create_table "market_value_schedules", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "sub_classification_id"
+    t.uuid "municipality_id"
+    t.decimal "market_value"
+    t.datetime "effectivity_date"
+    t.string "unit"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["municipality_id"], name: "index_market_value_schedules_on_municipality_id"
+    t.index ["sub_classification_id"], name: "index_market_value_schedules_on_sub_classification_id"
+  end
+
   create_table "market_values", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "sub_classification_id"
     t.decimal "market_value"
@@ -377,15 +389,16 @@ ActiveRecord::Schema.define(version: 20180113085613) do
   end
 
   create_table "transfer_transactions", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.uuid "new_owner_id"
-    t.uuid "old_real_property_id"
-    t.uuid "new_real_property_id"
     t.datetime "date_transferred"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["new_owner_id"], name: "index_transfer_transactions_on_new_owner_id"
-    t.index ["new_real_property_id"], name: "index_transfer_transactions_on_new_real_property_id"
-    t.index ["old_real_property_id"], name: "index_transfer_transactions_on_old_real_property_id"
+    t.uuid "grantee_id"
+    t.uuid "grantor_id"
+    t.uuid "transferred_real_property_id"
+    t.text "remarks"
+    t.index ["grantee_id"], name: "index_transfer_transactions_on_grantee_id"
+    t.index ["grantor_id"], name: "index_transfer_transactions_on_grantor_id"
+    t.index ["transferred_real_property_id"], name: "index_transfer_transactions_on_transferred_real_property_id"
   end
 
   add_foreign_key "accounts_receivable_configs", "accounts", column: "accounts_receivable_account_id"
@@ -412,6 +425,8 @@ ActiveRecord::Schema.define(version: 20180113085613) do
   add_foreign_key "locations", "streets"
   add_foreign_key "market_value_adjustments", "adjustment_factors"
   add_foreign_key "market_value_adjustments", "real_properties"
+  add_foreign_key "market_value_schedules", "municipalities"
+  add_foreign_key "market_value_schedules", "sub_classifications"
   add_foreign_key "market_values", "sub_classifications"
   add_foreign_key "municipalities", "provinces"
   add_foreign_key "previous_real_properties", "real_properties", column: "latest_real_property_id"
@@ -432,7 +447,7 @@ ActiveRecord::Schema.define(version: 20180113085613) do
   add_foreign_key "revisions", "real_properties"
   add_foreign_key "streets", "barangays"
   add_foreign_key "sub_classifications", "classifications"
-  add_foreign_key "transfer_transactions", "real_properties", column: "new_real_property_id"
-  add_foreign_key "transfer_transactions", "real_properties", column: "old_real_property_id"
-  add_foreign_key "transfer_transactions", "taxpayers", column: "new_owner_id"
+  add_foreign_key "transfer_transactions", "real_properties", column: "transferred_real_property_id"
+  add_foreign_key "transfer_transactions", "taxpayers", column: "grantee_id"
+  add_foreign_key "transfer_transactions", "taxpayers", column: "grantor_id"
 end

@@ -1,7 +1,8 @@
-class CreateMarketValues < ActiveRecord::Migration[5.1]
+class CreateMarketValueSchedules < ActiveRecord::Migration[5.2]
   def change
-    create_table :market_values, id: :uuid do |t|
+    create_table :market_value_schedules, id: :uuid do |t|
       t.belongs_to :sub_classification, foreign_key: true, type: :uuid
+      t.belongs_to :municipality, foreign_key: true, type: :uuid
       t.decimal :market_value
       t.datetime :effectivity_date
       t.string :unit

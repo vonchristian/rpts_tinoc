@@ -1,19 +1,10 @@
 module Transactions
   class TransferTransaction < ApplicationRecord
-    belongs_to :new_owner, class_name: "Taxpayer", foreign_key: 'new_owner_id'
-    belongs_to :old_real_property, class_name: "RealProperty", foreign_key: 'old_real_property_id'
-    belongs_to :new_real_property, class_name: "RealProperty", foreign_key: 'new_real_property_id'
-
+    belongs_to :grantee, class_name: "Taxpayer", foreign_key: 'grantee_id' #Buyer
+    belongs_to :grantor, class_name: "Taxpayer", foreign_key: 'grantor_id' #Seller
+    belongs_to :transferred_real_property, class_name: "RealProperty", foreign_key: 'transferred_real_property_id'
 
     validates :date_transferred, presence: true
-    validates :old_real_property_id, presence: true
-    delegate :description, to: :old_real_property, prefix: true
-    accepts_nested_attributes_for :new_real_property
-    after_commit :add_previous_real_properties
-    delegate :current_area, :current_sub_classification_current_market_value, to: :old_real_property
-    private
-    def add_previous_real_properties
-      PreviousRealProperty.add_previous_real_properties(self.old_real_property, self.new_real_property)
-    end
+    validates :transferred_real_property_id, presence: true
   end
 end
