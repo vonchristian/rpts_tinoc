@@ -10,7 +10,7 @@ module Transactions
     delegate :description, to: :old_real_property, prefix: true
     accepts_nested_attributes_for :new_real_property
     after_commit :add_previous_real_properties
-
+    delegate :current_area, :current_sub_classification_current_market_value, to: :old_real_property
     private
     def add_previous_real_properties
       PreviousRealProperty.add_previous_real_properties(self.old_real_property, self.new_real_property)

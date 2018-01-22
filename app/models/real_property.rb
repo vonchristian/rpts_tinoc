@@ -10,6 +10,7 @@ class RealProperty < ApplicationRecord
 
   ##Transactions
   has_one :transfer_transaction, foreign_key: 'old_real_property_id', class_name: "Transactions::TransferTransaction"
+  has_one :previous_transferred_real_property, foreign_key: 'new_real_property', class_name: "Transactions::TransferTransaction"
   has_many :real_property_consolidations, class_name: "RealProperties::RealPropertyConsolidation"
   has_many :subdivided_real_properties, class_name: 'RealProperty', foreign_key: 'subdivided_real_property_id'
 
@@ -59,7 +60,7 @@ class RealProperty < ApplicationRecord
     market_value + market_value_adjustments.total
   end
   def market_value
-    current_area * current_sub_classification_current_market_value
+    MarketValueComputation.new.compute(self)
   end
 
   def current_area

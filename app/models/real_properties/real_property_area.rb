@@ -4,7 +4,7 @@ module RealProperties
     has_many :revisions, as: :revised_data
     before_save :set_effectivity_date
     def self.current
-        order(effectivity_date: :asc).last.area
+       100
     end
 
     private
