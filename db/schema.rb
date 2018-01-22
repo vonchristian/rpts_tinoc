@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_01_22_102751) do
+ActiveRecord::Schema.define(version: 2018_01_22_115056) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -88,6 +88,15 @@ ActiveRecord::Schema.define(version: 2018_01_22_102751) do
     t.index ["entry_id", "account_id"], name: "index_amounts_on_entry_id_and_account_id"
     t.index ["entry_id"], name: "index_amounts_on_entry_id"
     t.index ["type"], name: "index_amounts_on_type"
+  end
+
+  create_table "archivers", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "archiveable_type"
+    t.uuid "archiveable_id"
+    t.datetime "date_archived"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["archiveable_type", "archiveable_id"], name: "index_archivers_on_archiveable_type_and_archiveable_id"
   end
 
   create_table "assessed_real_properties", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|

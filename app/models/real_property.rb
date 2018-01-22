@@ -2,7 +2,7 @@ class RealProperty < ApplicationRecord
   include PublicActivity::Common
   enum taxability: [:taxable, :exempted]
   has_one :subdivision_transaction, class_name: "Transactions::Subdivision", foreign_key: 'real_property_id'
-
+  has_one :archiving, as: :archiveable, class_name: "Archiver"
   has_one :location
   has_many :real_property_areas, class_name: "RealProperties::RealPropertyArea"
   has_many :market_value_adjustments, class_name: "RealProperties::MarketValueAdjustment"
@@ -42,6 +42,26 @@ class RealProperty < ApplicationRecord
   delegate :current_market_value, :name, to: :current_sub_classification, prefix: true, allow_nil: true
   delegate :assessment_level, :name, to: :current_classification, prefix: true, allow_nil: true
   delegate :divided_real_property, to: :subdivision_transaction, allow_nil: true
+  def cancel!(date_cancelled)
+    self.create_archiving(date_archived: date_cancelled)
+  end
+  def archived?
+    archiving.present?
+  end
+
+  def active?
+    !archived?
+  end
+  def pending?
+    assessed_real_properties.blank?
+  end
+  def archiving_status
+    if archived?
+      "Cancelled"
+    else
+      "Active"
+    end
+  end
   def current_owners_name
     if transfer_transaction.present?
       transfer_transaction.grantee

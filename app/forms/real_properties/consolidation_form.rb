@@ -21,6 +21,7 @@ module RealProperties
       new_real_property.real_property_areas.create(area: area)
       find_taxpayer.consolidated_real_properties.each do |consolidated_real_property|
         new_real_property.consolidated_real_properties << consolidated_real_property
+        consolidated_real_property.cancel!(date)
       end
     end
   end
