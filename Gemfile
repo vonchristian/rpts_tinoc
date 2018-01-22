@@ -22,6 +22,8 @@ gem 'coffee-rails', '~> 4.2'
 gem 'jbuilder', '~> 2.5'
 gem 'redis', '~> 3.2'
 gem 'devise'
+gem 'devise_invitable', '~> 1.7.0'
+gem 'apartment'
 gem 'simple_form'
 gem "select2-rails"
 gem 'jquery-rails'
@@ -68,6 +70,7 @@ group :development, :test do
 end
 
 group :development do
+  gem "letter_opener"
   gem 'pry-rails'
   gem 'listen', '>= 3.0.5', '< 3.2'
   gem 'spring'
