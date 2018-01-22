@@ -11,9 +11,9 @@ Rails.application.routes.draw do
     resources :north_property_boundaries, only: [:new, :create], module: :real_properties
     resources :south_property_boundaries, only: [:new, :create], module: :real_properties
     resources :additional_taxpayers, only: [:new, :create], module: :real_properties
-    resources :subdivisions, only: [:new, :create], module: :real_properties
+    resources :subdivision_transactions, only: [:new, :create], module: :real_properties
     resources :assessed_real_properties, only: [:new, :create], module: :real_properties
-    resources :transfer_transactions, only: [:new, :create], module: :real_properties
+    resources :transfer_transactions, only: [:index, :new, :create], module: :real_properties
     resources :north_property_boundaries
   resources :encumberances, only: [:new, :create], module: :real_properties
     resources :buildings, only: [:new, :create], module: :real_properties

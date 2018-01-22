@@ -75,7 +75,7 @@ group :development do
   gem 'spring-commands-rspec'
 end
 group :test do
-  gem 'shoulda-matchers'
+  gem 'shoulda-matchers', '~> 3.1'
   gem 'database_rewinder'
   gem 'launchy'
   gem 'capybara-webkit'

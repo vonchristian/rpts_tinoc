@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_01_22_031907) do
+ActiveRecord::Schema.define(version: 2018_01_22_044019) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -298,11 +298,9 @@ ActiveRecord::Schema.define(version: 2018_01_22_031907) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "description"
-    t.uuid "subdivided_real_property_id"
     t.integer "taxability"
     t.uuid "land_reference_id"
     t.index ["land_reference_id"], name: "index_real_properties_on_land_reference_id"
-    t.index ["subdivided_real_property_id"], name: "index_real_properties_on_subdivided_real_property_id"
     t.index ["taxability"], name: "index_real_properties_on_taxability"
     t.index ["type"], name: "index_real_properties_on_type"
   end
@@ -385,6 +383,16 @@ ActiveRecord::Schema.define(version: 2018_01_22_031907) do
     t.index ["classification_id"], name: "index_sub_classifications_on_classification_id"
   end
 
+  create_table "subdivisions", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "divided_real_property_id"
+    t.datetime "date"
+    t.uuid "real_property_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["divided_real_property_id"], name: "index_subdivisions_on_divided_real_property_id"
+    t.index ["real_property_id"], name: "index_subdivisions_on_real_property_id"
+  end
+
   create_table "taxpayers", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "first_name"
     t.string "middle_name"
@@ -453,7 +461,6 @@ ActiveRecord::Schema.define(version: 2018_01_22_031907) do
   add_foreign_key "property_administrations", "real_properties"
   add_foreign_key "property_boundaries", "real_properties"
   add_foreign_key "real_properties", "real_properties", column: "land_reference_id"
-  add_foreign_key "real_properties", "real_properties", column: "subdivided_real_property_id"
   add_foreign_key "real_property_areas", "real_properties"
   add_foreign_key "real_property_classifications", "classifications"
   add_foreign_key "real_property_classifications", "real_properties"
@@ -466,6 +473,8 @@ ActiveRecord::Schema.define(version: 2018_01_22_031907) do
   add_foreign_key "revisions", "real_properties"
   add_foreign_key "streets", "barangays"
   add_foreign_key "sub_classifications", "classifications"
+  add_foreign_key "subdivisions", "real_properties"
+  add_foreign_key "subdivisions", "real_properties", column: "divided_real_property_id"
   add_foreign_key "transfer_transactions", "real_properties", column: "transferred_real_property_id"
   add_foreign_key "transfer_transactions", "taxpayers", column: "grantee_id"
   add_foreign_key "transfer_transactions", "taxpayers", column: "grantor_id"

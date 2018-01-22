@@ -1,5 +1,8 @@
 module RealProperties
   class TransferTransactionsController < ApplicationController
+    def index
+      @real_property = RealProperty.find(params[:real_property_id])
+    end
     def new
       @real_property = RealProperty.find(params[:real_property_id])
       @transfer = Transactions::TransferTransactionForm.new
@@ -9,6 +12,7 @@ module RealProperties
       @transfer = Transactions::TransferTransactionForm.new(transfer_transaction_params)
       if @transfer.valid?
         @transfer.transfer_property!
+        @transfer.create_activity(owner: current_owner)
         redirect_to real_property_url(@real_property), notice: "Transfer saved successfully."
       else
         render :new

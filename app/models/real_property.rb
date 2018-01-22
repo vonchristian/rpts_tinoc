@@ -13,7 +13,8 @@ class RealProperty < ApplicationRecord
   has_many :transfer_transactions, foreign_key: 'transferred_real_property_id', class_name: "Transactions::TransferTransaction"
 
   has_many :real_property_consolidations, class_name: "RealProperties::RealPropertyConsolidation"
-  has_many :subdivided_real_properties, class_name: 'RealProperty', foreign_key: 'subdivided_real_property_id'
+  has_many :subdivision_transactions, class_name: "Transactions::Subdivision", foreign_key: 'divided_real_property_id'
+  has_many :subdivided_real_properties, class_name: 'RealProperty', through: :subdivision_transactions, source: :real_property
 
   has_many :assessed_real_properties, class_name: "RealProperties::AssessedRealProperty"
   has_many :previous_real_properties, foreign_key: 'latest_real_property_id', class_name: "PreviousRealProperty"

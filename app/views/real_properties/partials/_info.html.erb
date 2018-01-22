@@ -7,6 +7,7 @@
 <% end %>
 <% end %>
 <%= link_to 'Add Taxpayer', new_real_property_additional_taxpayer_path(@real_property) %>
+<%= link_to "View History", real_property_transfer_transactions_path(@real_property) %>
 <hr />
 <h4>ARP</h4>
 <p>Current ARP: <%= @real_property.current_arp %></p>
@@ -48,7 +49,7 @@ Assessed Value: <%= number_to_currency @real_property.assessed_value %>
 <%= link_to 'New Transfer', new_real_property_transfer_transaction_path(@real_property) %>
 
 
-<%= link_to 'New Subdivision', new_real_property_subdivision_path(@real_property) %>
+<%= link_to 'New Subdivision', new_real_property_subdivision_transaction_path(@real_property) %>
 
 
 <p>Previous Real Properties</p>

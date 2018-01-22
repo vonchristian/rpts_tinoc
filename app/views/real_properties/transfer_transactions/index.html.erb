@@ -1,0 +1,18 @@
+<div class="row">
+  <div class="col-md-8 col-md-offset-2">
+    <div class="box box-solid">
+      <% @real_property.transfer_transactions.each do |transfer_transaction| %>
+        <div class="row">
+          <div class="col-md-3">
+            <%= transfer_transaction.date_transferred %>
+          </div>
+          <div class="col-md-6">
+            <%= transfer_transaction.grantee.name %>
+            <%= transfer_transaction.grantor.name %>
+          </div>
+        </div>
+        <br>
+      <% end %>
+    </div>
+  </div>
+</div>

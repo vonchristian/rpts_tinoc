@@ -451,7 +451,7 @@ DEPENDENCIES
   rubyzip (~> 1.1.0)
   sass-rails (>= 3.2)
   select2-rails
-  shoulda-matchers
+  shoulda-matchers (~> 3.1)
   simple-line-icons-rails
   simple_calendar (~> 2.0)
   simple_form
