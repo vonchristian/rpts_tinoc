@@ -1,7 +1,7 @@
 <%= simple_form_for [@real_property, @area], url: :real_property_real_property_areas do |f| %>
   <%= f.input :area %>
   <%= f.input :effectivity_date, input_html: { class: "datepicker" } %>
-    <%= f.input :real_property_id, input_html: { value: @real_property.id } %>
+    <%= f.input :real_property_id, input_html: { value: @real_property.id }, as: :hidden %>
           <%= f.input :remarks, as: :text %>
   <%= f.submit %>
 <% end %>
