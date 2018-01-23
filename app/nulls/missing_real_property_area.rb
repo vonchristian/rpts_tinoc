@@ -1,5 +1,5 @@
 class MissingRealPropertyArea
-  def self.current
+  def current
     0
   end
 end

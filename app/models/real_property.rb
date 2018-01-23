@@ -111,7 +111,7 @@ class RealProperty < ApplicationRecord
     end
   end
   def current_arp
-    assessed_real_properties.order(created_at: :asc).last.try(:number)
+    assessed_real_properties.current
   end
   def previous_arps
     if transfer_transaction

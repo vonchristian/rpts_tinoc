@@ -50,3 +50,9 @@ rename market_value to fair_market_value
 
 
 HOW TO COMPUTE ASSESSED VALUE IF data is changed
+
+
+
+Refactor AssessedValue to PropertyValuation
+
+Delinquency Period # find out the years taxes are not paid
