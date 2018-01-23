@@ -13,7 +13,7 @@ module RealProperties
 
     private
     def additional_taxpayer_params
-      params.require(:taxpayers_real_property_ownership).permit(:taxpayer_id)
+      params.require(:taxpayers_real_property_ownership).permit(:property_owner_id, :property_owner_type)
     end
   end
 end

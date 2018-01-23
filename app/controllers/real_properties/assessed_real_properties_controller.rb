@@ -9,7 +9,7 @@ module RealProperties
       @assessed_real_property = @real_property.assessed_real_properties.create(assessed_real_property_params)
       if @assessed_real_property.valid?
         @assessed_real_property.save
-        redirect_to real_property_url(@real_property), notice: "ARP saved successfully"
+        redirect_to real_property_arps_url(@real_property), notice: "ARP saved successfully"
       else
         render :new
       end

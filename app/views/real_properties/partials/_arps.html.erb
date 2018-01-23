@@ -1,0 +1,20 @@
+<%= link_to 'New ARP', new_real_property_assessed_real_property_path(@real_property), class: "btn btn-primary" %>
+<hr />
+<% @arps.each do |arp| %>
+  <div class="row">
+    <div class="col-md-5">
+      <b><%= arp.number %></b>
+    </div>
+    <div class="col-md-3">
+      <%= arp.effectivity_date %>
+    </div>
+    <div class="col-md-3">
+      <% if !arp.cancelled? %>
+      <%= link_to 'Cancel', arp_cancellations_path(arp), method: :post, class: "btn btn-danger btn-sm" %>
+      <% else %>
+        <span class="text-danger">Cancelled</span>
+      <% end %>
+    </div>
+  </div>
+  <hr>
+<% end %>

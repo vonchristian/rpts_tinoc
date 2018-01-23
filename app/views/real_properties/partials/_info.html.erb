@@ -19,18 +19,7 @@
 <hr />
 <h4>ARP</h4>
 <p>Current ARP: <%= @real_property.current_arp %></p>
-<%= link_to 'New ARP', new_real_property_assessed_real_property_path(@real_property) %>
-<% @real_property.assessed_real_properties.each do |arp| %>
-  <div class="row">
-    <div class="col-md-5">
-      <%= arp.number %>
-    </div>
-    <div class="col-md-3">
-      <%= arp.effectivity_date %>
-    </div>
-  </div>
-  <br>
-<% end %>
+
 <h4>Boundaries</h4>
 <%= link_to 'North', new_real_property_north_property_boundary_path(@real_property) %>
 <%= @real_property.north_property_boundaries.current.try(:remarks) %>
@@ -78,7 +67,7 @@ Assessed Value: <%= number_to_currency @real_property.assessed_value %>
 <% end %>
 
 
-<%= link_to 'New Encumberance', new_real_property_encumberance_path(@real_property) %>
+
 <% @real_property.encumberances.each do |encumberance| %>
   <%= encumberance.content %>
 <% end %>

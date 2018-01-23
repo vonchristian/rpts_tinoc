@@ -2,6 +2,8 @@ Rails.application.routes.draw do
   get 'home/index'
   devise_for :users
   resources :real_properties, only: [:index, :show] do
+    resources :arps, only: [:index], module: :real_properties
+    resources :encumberances, only: [:index], module: :real_properties
     resources :field_appraisal_and_assessments, only: [:index], module: :real_properties
     resources :reports, only: [:index], module: :real_properties
     resources :assessed_values, only: [:new, :create], module: :real_properties
@@ -42,6 +44,12 @@ Rails.application.routes.draw do
     resources :sub_classifications, only: [:show] do
       resources :market_value_schedules, only: [:new, :create]
     end
+  end
+  resources :encumberances, only: [:show] do
+    resources :cancellations, only: [:create], module: :encumberances
+  end
+  resources :arps, only: [:show] do
+    resources :cancellations, only: [:create], module: :arps
   end
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
 end

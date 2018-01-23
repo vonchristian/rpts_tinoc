@@ -1,0 +1,18 @@
+<%= link_to 'New Encumberance', new_real_property_encumberance_path(@real_property), class: "btn btn-primary" %>
+<hr>
+<% @encumberances.each do |encumberance| %>
+  <div class="row">
+    <div class="col-md-9">
+      <span class="help-block"><%= encumberance.date.strftime("%B %e, %Y") %></span>
+      <%= encumberance.content %>
+    </div>
+    <div class="col-md-2">
+      <% if !encumberance.cancelled? %>
+      <%= link_to 'Cancel', encumberance_cancellations_path(encumberance), method: :post, class: "btn btn-danger btn-sm" %>
+      <% else %>
+        <span class="text-danger">Cancelled</span>
+      <% end %>
+    </div>
+  </div>
+  <hr />
+<% end %>
