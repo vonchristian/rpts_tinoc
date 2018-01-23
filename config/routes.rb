@@ -2,6 +2,7 @@ Rails.application.routes.draw do
   get 'home/index'
   devise_for :users
   resources :real_properties, only: [:index, :show] do
+    resources :transactions, only: [:index], module: :real_properties
     resources :arps, only: [:index], module: :real_properties
     resources :encumberances, only: [:index], module: :real_properties
     resources :field_appraisal_and_assessments, only: [:index], module: :real_properties

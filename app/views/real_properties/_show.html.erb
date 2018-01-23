@@ -2,8 +2,9 @@
   <div class="col-md-12">
     <div class="box box-solid">
       <div class="box-header">
-        <h3 class="box-title"> Real Property Details </h3>
+
       </div>
+      <div class="box-body">
       <div class="nav-tabs-navigation">
         <ul id="tabs" class="nav nav-tabs" data-tabs="tabs">
           <li class="<%= 'active' if current_page?(real_property_path(@real_property))%>"><%= link_to 'Info', real_property_path(@real_property) %></li>
@@ -13,6 +14,8 @@
 
           <li class="<%= 'active' if current_page?(real_property_settings_path(@real_property))%>"><%= link_to 'Settings', real_property_settings_path(@real_property) %></li>
           <li class="<%= 'active' if current_page?(real_property_reports_path(@real_property))%>"><%= link_to 'Reports', real_property_reports_path(@real_property) %></li>
+          <li class="<%= 'active' if current_page?(real_property_transactions_path(@real_property))%>"><%= link_to 'Transactions', real_property_transactions_path(@real_property) %></li>
+
 
         </ul>
         <div class="content">
@@ -29,5 +32,8 @@
             <%= render 'real_properties/partials/encumberances' %>
           <% elsif current_page? real_property_reports_path(@real_property) %>
             <%= render 'real_properties/partials/reports' %>
+            <% elsif current_page? real_property_transactions_path(@real_property) %>
+            <%= render 'real_properties/partials/history' %>
+
           <% end %>
         </div>

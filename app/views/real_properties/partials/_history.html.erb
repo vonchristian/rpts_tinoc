@@ -1,0 +1,19 @@
+<h4>Transfer Transactions </h4>
+<% if @real_property.transfer_transactions.present? %>
+  <%= @real_property.transfer_transactions.order(created_at: :asc).last.grantee.name %>
+<% else %>
+<% end %>
+<h4>Consolidated Real Properties</h4>
+  <% @real_property.consolidated_real_properties.each do |real_property| %>
+    <%= real_property.description %>
+  <% end %>
+  <hr />
+<h4>Previous Real Property Info</h4>
+
+<hr>
+<p>Previous Real Properties</p>
+  <% @real_property.previous_real_properties.each do |real_property| %>
+    <%= link_to real_property.old_real_property.description, real_property_path(real_property.old_real_property) %>
+  <% end %>
+
+<hr>
