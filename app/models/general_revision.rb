@@ -1,0 +1,2 @@
+class GeneralRevision < ApplicationRecord
+end

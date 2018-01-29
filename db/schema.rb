@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_01_22_115056) do
+ActiveRecord::Schema.define(version: 2018_01_29_063918) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -107,7 +107,14 @@ ActiveRecord::Schema.define(version: 2018_01_22_115056) do
     t.datetime "updated_at", null: false
     t.datetime "effectivity_date"
     t.uuid "assessed_value_id"
+    t.uuid "general_revision_id"
+    t.uuid "municipality_id"
+    t.uuid "barangay_id"
+    t.integer "assigned_number"
     t.index ["assessed_value_id"], name: "index_assessed_real_properties_on_assessed_value_id"
+    t.index ["barangay_id"], name: "index_assessed_real_properties_on_barangay_id"
+    t.index ["general_revision_id"], name: "index_assessed_real_properties_on_general_revision_id"
+    t.index ["municipality_id"], name: "index_assessed_real_properties_on_municipality_id"
     t.index ["number"], name: "index_assessed_real_properties_on_number", unique: true
     t.index ["real_property_id"], name: "index_assessed_real_properties_on_real_property_id"
   end
@@ -138,6 +145,7 @@ ActiveRecord::Schema.define(version: 2018_01_22_115056) do
     t.string "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "code"
     t.index ["municipality_id"], name: "index_barangays_on_municipality_id"
   end
 
@@ -210,6 +218,14 @@ ActiveRecord::Schema.define(version: 2018_01_22_115056) do
     t.index ["building_id"], name: "index_floors_on_building_id"
   end
 
+  create_table "general_revisions", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.date "effectivity_year"
+    t.string "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["name"], name: "index_general_revisions_on_name", unique: true
+  end
+
   create_table "locations", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "real_property_id"
     t.uuid "street_id"
@@ -259,6 +275,7 @@ ActiveRecord::Schema.define(version: 2018_01_22_115056) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.uuid "province_id"
+    t.string "code"
     t.index ["province_id"], name: "index_municipalities_on_province_id"
   end
 
@@ -313,8 +330,12 @@ ActiveRecord::Schema.define(version: 2018_01_22_115056) do
     t.integer "taxability"
     t.uuid "land_reference_id"
     t.uuid "consolidated_real_property_id"
+    t.uuid "municipality_id"
+    t.uuid "barangay_id"
+    t.index ["barangay_id"], name: "index_real_properties_on_barangay_id"
     t.index ["consolidated_real_property_id"], name: "index_real_properties_on_consolidated_real_property_id"
     t.index ["land_reference_id"], name: "index_real_properties_on_land_reference_id"
+    t.index ["municipality_id"], name: "index_real_properties_on_municipality_id"
     t.index ["taxability"], name: "index_real_properties_on_taxability"
     t.index ["type"], name: "index_real_properties_on_type"
   end
@@ -490,6 +511,9 @@ ActiveRecord::Schema.define(version: 2018_01_22_115056) do
   add_foreign_key "amounts", "accounts"
   add_foreign_key "amounts", "entries"
   add_foreign_key "assessed_real_properties", "assessed_values"
+  add_foreign_key "assessed_real_properties", "barangays"
+  add_foreign_key "assessed_real_properties", "general_revisions"
+  add_foreign_key "assessed_real_properties", "municipalities"
   add_foreign_key "assessed_real_properties", "real_properties"
   add_foreign_key "assessed_values", "assessed_real_properties"
   add_foreign_key "assessed_values", "real_properties"
@@ -515,6 +539,8 @@ ActiveRecord::Schema.define(version: 2018_01_22_115056) do
   add_foreign_key "previous_real_properties", "real_properties", column: "old_real_property_id"
   add_foreign_key "property_administrations", "real_properties"
   add_foreign_key "property_boundaries", "real_properties"
+  add_foreign_key "real_properties", "barangays"
+  add_foreign_key "real_properties", "municipalities"
   add_foreign_key "real_properties", "real_properties", column: "consolidated_real_property_id"
   add_foreign_key "real_properties", "real_properties", column: "land_reference_id"
   add_foreign_key "real_property_areas", "real_properties"

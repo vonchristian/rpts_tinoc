@@ -1,6 +1,9 @@
 module RealProperties
   class AssessedRealProperty < ApplicationRecord
     belongs_to :real_property
+    belongs_to :general_revision
+    belongs_to :municipality, class_name: "Locations::Municipality"
+    belongs_to :barangay, class_name: "Locations::Barangay"
     has_one :assessed_value
     validates :number, presence: true, uniqueness: true
     has_one :archiving, as: :archiveable, class_name: "Archiver"
