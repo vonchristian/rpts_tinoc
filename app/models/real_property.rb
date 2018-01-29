@@ -82,8 +82,8 @@ class RealProperty < ApplicationRecord
   def taxpayers_name
     property_owners.map{|a| a.name }.join(",")
   end
-  def assessed_value
-    assessed_values.current
+  def assessed_value(options = {})
+    assessed_values.current(options)
   end
 
   def temp_assessed_value

@@ -2,8 +2,18 @@ module RealProperties
   class AssessedValue < ApplicationRecord
     belongs_to :real_property
     belongs_to :assessed_real_property
-    def self.current
-      order(effectivity_date: :asc).last.try(:assessed_value)
+    def self.current(options)
+      if options[:from_date] && options[:to_date]
+        date_range = DateRange.new(from_date: options[:from_date], to_date: options[:to_date])
+        assessed = where('effectivity_date' =>(date_range.start_date..date_range.end_date)).last
+        if assessed.present?
+          assessed
+        else
+          order(effectivity_date: :asc).last.try(:assessed_value)
+        end
+      else
+        order(effectivity_date: :asc).last.try(:assessed_value)
+      end
     end
 
     def paid?
