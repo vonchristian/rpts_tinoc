@@ -12,5 +12,16 @@ module RealProperties
       it { is_expected.to validate_presence_of :number }
       it { is_expected.to validate_uniqueness_of :number }
     end
+    describe 'scopes' do
+      it '.active' do
+        cancelled_arp = create(:assessed_real_property)
+        active_arp = create(:assessed_real_property)
+
+        cancelled_arp.cancel!
+
+        expect(RealProperties::AssessedRealProperty.active).to include(active_arp)
+        expect(RealProperties::AssessedRealProperty.active).to_not include(cancelled_arp)
+      end
+    end
   end
 end

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_01_29_063918) do
+ActiveRecord::Schema.define(version: 2018_01_29_090208) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -23,7 +23,9 @@ ActiveRecord::Schema.define(version: 2018_01_29_063918) do
     t.string "account_code"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.uuid "main_account_id"
     t.index ["account_code"], name: "index_accounts_on_account_code", unique: true
+    t.index ["main_account_id"], name: "index_accounts_on_main_account_id"
     t.index ["name"], name: "index_accounts_on_name", unique: true
     t.index ["type"], name: "index_accounts_on_type"
   end
@@ -83,8 +85,11 @@ ActiveRecord::Schema.define(version: 2018_01_29_063918) do
     t.decimal "amount"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "commercial_document_type"
+    t.uuid "commercial_document_id"
     t.index ["account_id", "entry_id"], name: "index_amounts_on_account_id_and_entry_id"
     t.index ["account_id"], name: "index_amounts_on_account_id"
+    t.index ["commercial_document_type", "commercial_document_id"], name: "index_commercial_document_on_amounts"
     t.index ["entry_id", "account_id"], name: "index_amounts_on_entry_id_and_account_id"
     t.index ["entry_id"], name: "index_amounts_on_entry_id"
     t.index ["type"], name: "index_amounts_on_type"
@@ -223,6 +228,8 @@ ActiveRecord::Schema.define(version: 2018_01_29_063918) do
     t.string "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.decimal "maximum_number_of_deliquency", default: "1.0"
+    t.decimal "penalty_rate", default: "1.0"
     t.index ["name"], name: "index_general_revisions_on_name", unique: true
   end
 
@@ -390,6 +397,17 @@ ActiveRecord::Schema.define(version: 2018_01_29_063918) do
     t.index ["sub_classification_id"], name: "index_sub_classification_on_real_property_sub_classifications"
   end
 
+  create_table "real_property_taxes", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "tax_id"
+    t.uuid "real_property_id"
+    t.uuid "taxation_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["real_property_id"], name: "index_real_property_taxes_on_real_property_id"
+    t.index ["tax_id"], name: "index_real_property_taxes_on_tax_id"
+    t.index ["taxation_id"], name: "index_real_property_taxes_on_taxation_id"
+  end
+
   create_table "revisions", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "real_property_id"
     t.string "revised_data_type"
@@ -426,6 +444,27 @@ ActiveRecord::Schema.define(version: 2018_01_29_063918) do
     t.datetime "updated_at", null: false
     t.index ["divided_real_property_id"], name: "index_subdivisions_on_divided_real_property_id"
     t.index ["real_property_id"], name: "index_subdivisions_on_real_property_id"
+  end
+
+  create_table "taxations", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "general_revision_id"
+    t.uuid "real_property_id"
+    t.datetime "effectivity_date"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["general_revision_id"], name: "index_taxations_on_general_revision_id"
+    t.index ["real_property_id"], name: "index_taxations_on_real_property_id"
+  end
+
+  create_table "taxes", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "name"
+    t.uuid "revenue_account_id"
+    t.boolean "default_tax", default: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.decimal "rate"
+    t.index ["name"], name: "index_taxes_on_name", unique: true
+    t.index ["revenue_account_id"], name: "index_taxes_on_revenue_account_id"
   end
 
   create_table "taxpayers", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -504,6 +543,7 @@ ActiveRecord::Schema.define(version: 2018_01_29_063918) do
     t.index ["unlock_token"], name: "index_users_on_unlock_token", unique: true
   end
 
+  add_foreign_key "accounts", "accounts", column: "main_account_id"
   add_foreign_key "accounts_receivable_configs", "accounts", column: "accounts_receivable_account_id"
   add_foreign_key "addresses", "barangays"
   add_foreign_key "addresses", "municipalities"
@@ -552,11 +592,17 @@ ActiveRecord::Schema.define(version: 2018_01_29_063918) do
   add_foreign_key "real_property_ownerships", "real_properties"
   add_foreign_key "real_property_sub_classifications", "real_properties"
   add_foreign_key "real_property_sub_classifications", "sub_classifications"
+  add_foreign_key "real_property_taxes", "real_properties"
+  add_foreign_key "real_property_taxes", "taxations"
+  add_foreign_key "real_property_taxes", "taxes"
   add_foreign_key "revisions", "real_properties"
   add_foreign_key "streets", "barangays"
   add_foreign_key "sub_classifications", "classifications"
   add_foreign_key "subdivisions", "real_properties"
   add_foreign_key "subdivisions", "real_properties", column: "divided_real_property_id"
+  add_foreign_key "taxations", "general_revisions"
+  add_foreign_key "taxations", "real_properties"
+  add_foreign_key "taxes", "accounts", column: "revenue_account_id"
   add_foreign_key "transfer_transactions", "real_properties", column: "transferred_real_property_id"
   add_foreign_key "transfer_transactions", "taxpayers", column: "grantee_id"
   add_foreign_key "transfer_transactions", "taxpayers", column: "grantor_id"

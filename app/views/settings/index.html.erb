@@ -7,3 +7,9 @@
 
 <h4> Adjustment Factors </h4>
 <%= link_to "New", new_settings_adjustment_factor_path %>
+<hr>
+<h4>Municipalities</h4>
+<%= link_to 'New Municipality', new_settings_municipality_path %>
+<% Locations::Municipality.all.each do |municipality| %>
+  <%= link_to municipality.name, municipality_path(municipality) %>
+<% end %>

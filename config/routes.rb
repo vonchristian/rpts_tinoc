@@ -20,8 +20,9 @@ Rails.application.routes.draw do
     resources :assessed_real_properties, only: [:new, :create], module: :real_properties
     resources :transfer_transactions, only: [:index, :new, :create], module: :real_properties
     resources :north_property_boundaries
-  resources :encumberances, only: [:new, :create], module: :real_properties
+    resources :encumberances, only: [:new, :create], module: :real_properties
     resources :buildings, only: [:new, :create], module: :real_properties
+    resources :taxations, only: [:index], module: :real_properties
   end
 
   namespace :properties do
@@ -37,6 +38,7 @@ Rails.application.routes.draw do
   end
   resources :settings, only: [:index]
   namespace :settings do
+    resources :municipalities, only: [:new, :create]
     resources :adjustment_factors, only: [:new, :create]
     resources :classifications, only: [:show, :new, :create] do
       resources :sub_classifications, only: [:new, :create]
@@ -51,6 +53,9 @@ Rails.application.routes.draw do
   end
   resources :arps, only: [:show] do
     resources :cancellations, only: [:create], module: :arps
+  end
+  resources :municipalities, only: [:show] do
+    resources :barangays, only: [:new, :create], module: :settings
   end
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
 end

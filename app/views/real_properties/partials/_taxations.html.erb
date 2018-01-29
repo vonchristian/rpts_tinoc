@@ -1,0 +1,37 @@
+<div class="row">
+  <div class="col-md-8">
+    <% @taxations.each do |taxation| %>
+      <h4><%= taxation.effectivity_date.year %></h4>
+      <% taxation.taxes.each do |tax| %>
+        <div class="row">
+          <div class="col-md-5">
+            <span class="text-muted">
+              &nbsp; &nbsp; <%= tax.name %>
+            </span>
+          </div>
+          <div class="col-md-2">
+            <%= number_to_currency taxation.compute_tax(tax) %>
+          </div>
+          <div class="col-md-2">
+            <%= number_to_currency taxation.compute_penalty(tax) %>
+          </div>
+        </div>
+        <br>
+      <% end %>
+      <hr>
+    <% end %>
+  </div>
+    <div class="col-md-3">
+      <h4>Summary</h4>
+      Basic Tax Total
+      <br>
+      Special Tax TOtal
+      <br>
+      Penalties
+      <hr>
+      <h5>TOTAL</h5>
+      <br>
+      <%= link_to "Assess" %>
+    </div>
+  </div>
+

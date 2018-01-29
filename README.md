@@ -40,7 +40,7 @@ a/r payments
 PROPOSAL
 P890, 000.00 Capitol
 P 165, 000.00 per municipality
-_______________________-______
+_____________________________
 
 prepare proposal and demo on January 15
 

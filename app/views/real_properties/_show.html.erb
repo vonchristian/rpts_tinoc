@@ -8,6 +8,7 @@
       <div class="nav-tabs-navigation">
         <ul id="tabs" class="nav nav-tabs" data-tabs="tabs">
           <li class="<%= 'active' if current_page?(real_property_path(@real_property))%>"><%= link_to 'Info', real_property_path(@real_property) %></li>
+          <li class="<%= 'active' if current_page?(real_property_taxations_path(@real_property))%>"><%= link_to 'Taxations', real_property_taxations_path(@real_property) %></li>
           <li class="<%= 'active' if current_page?(real_property_arps_path(@real_property))%>"><%= link_to 'ARP', real_property_arps_path(@real_property) %></li>
           <li class="<%= 'active' if current_page?(real_property_encumberances_path(@real_property))%>"><%= link_to 'Encumberances', real_property_encumberances_path(@real_property) %></li>
            <li class="<%= 'active' if current_page?(real_property_revisions_path(@real_property))%>"><%= link_to 'Revisions', real_property_revisions_path(@real_property) %></li>
@@ -21,6 +22,8 @@
         <div class="content">
           <% if current_page? real_property_path(@real_property) %>
             <%= render 'real_properties/partials/info' %>
+          <% elsif current_page? real_property_taxations_path(@real_property) %>
+            <%= render 'real_properties/partials/taxations' %>
           <% elsif current_page? real_property_settings_path(@real_property) %>
             <%= render 'real_properties/partials/settings' %>
           <% elsif current_page? real_property_arps_path(@real_property) %>

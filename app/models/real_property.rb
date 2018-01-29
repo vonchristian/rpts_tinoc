@@ -2,6 +2,8 @@ class RealProperty < ApplicationRecord
   include PublicActivity::Common
   enum taxability: [:taxable, :exempted]
   has_one :subdivision_transaction, class_name: "Transactions::Subdivision", foreign_key: 'real_property_id'
+  belongs_to :municipality, class_name: "Locations::Municipality"
+  belongs_to :barangay, class_name: "Locations::Barangay"
   has_one :archiving, as: :archiveable, class_name: "Archiver"
   has_one :location
   has_many :real_property_areas, class_name: "RealProperties::RealPropertyArea"
@@ -17,7 +19,8 @@ class RealProperty < ApplicationRecord
   has_many :consolidated_real_properties, class_name: "RealProperty", foreign_key: 'consolidated_real_property_id'
   has_many :subdivision_transactions, class_name: "Transactions::Subdivision", foreign_key: 'divided_real_property_id'
   has_many :subdivided_real_properties, class_name: 'RealProperty', through: :subdivision_transactions, source: :real_property
-
+  has_many :real_property_taxes
+  has_many :taxations
   has_many :assessed_real_properties, class_name: "RealProperties::AssessedRealProperty"
   has_many :previous_real_properties, foreign_key: 'latest_real_property_id', class_name: "PreviousRealProperty"
 
@@ -118,7 +121,12 @@ class RealProperty < ApplicationRecord
       previous_real_property.current_arp
     end
   end
+  def assessments(options={})
+    AccountingModule::Account.find_by(name: "Assessed Real Property Taxes").debits_balance(commercial_document_id: self.id, from_date: options[:from_date], to_date: options[:to_date])
+  end
+  def payments(options = {})
+    AccountingModule::Account.find_by(name: "Real Property Taxes").credits_balance(commercial_document_id: self.id, from_date: options[:from_date], to_date: options[:to_date])
+  end
   def current_owner
-
   end
 end

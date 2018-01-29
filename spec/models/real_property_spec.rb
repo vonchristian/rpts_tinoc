@@ -3,6 +3,8 @@ require 'rails_helper'
 describe RealProperty do
   describe 'associations' do
     it { is_expected.to have_one :location }
+    it { is_expected.to belong_to :municipality }
+    it { is_expected.to belong_to :barangay }
     it { is_expected.to have_many :property_owners }
     it { is_expected.to have_many :real_property_ownerships }
     it { is_expected.to have_many :assessed_real_properties }
@@ -17,6 +19,8 @@ describe RealProperty do
     it { is_expected.to have_many :east_property_boundaries }
     it { is_expected.to have_many :west_property_boundaries }
     it { is_expected.to have_many :assessed_values }
+    it { is_expected.to have_many :real_property_taxes }
+    it { is_expected.to have_many :taxations }
   end
 
    describe 'enums' do

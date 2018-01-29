@@ -8,6 +8,14 @@ module RealProperties
     validates :number, presence: true, uniqueness: true
     has_one :archiving, as: :archiveable, class_name: "Archiver"
 
+    def self.oldest_effectivity_year
+      pluck(:effectivity_date).sort.map{|a| a.to_date.year }.uniq.sort.first
+    end
+
+    def self.active
+      includes(:archiving).select{ |a| !a.cancelled? }
+    end
+
     def self.current
       order(created_at: :asc).last.try(:number) || MissingArp.new.current
     end

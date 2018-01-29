@@ -1,0 +1,7 @@
+<%= simple_form_for @municipality, url: :settings_municipalities do |f| %>
+  <%= f.error_notification %>
+  <%= f.input :province_id, collection: Locations::Province.all.map{|a| [ a.name, a.id ] } %>
+  <%= f.input :name %>
+  <%= f.input :code %>
+  <%= f.submit %>
+<% end %>
