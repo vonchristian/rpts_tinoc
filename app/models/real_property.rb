@@ -121,6 +121,9 @@ class RealProperty < ApplicationRecord
       previous_real_property.current_arp
     end
   end
+  def balance(options={})
+    assessments(options) - payments(options)
+  end
   def assessments(options={})
     AccountingModule::Account.find_by(name: "Assessed Real Property Taxes").debits_balance(commercial_document_id: self.id, from_date: options[:from_date], to_date: options[:to_date])
   end
